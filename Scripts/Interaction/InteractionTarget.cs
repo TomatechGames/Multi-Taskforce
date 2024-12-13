@@ -11,6 +11,11 @@ public partial class InteractionTarget : Area3D
     [Export]
     float directionalTolorence = 90;
 
+    public override void _Ready()
+    {
+        SetHovered(false);
+    }
+
     public bool CanInteract(Vector3 incomingDirection)
     {
         Vector3 forward = -GlobalBasis.Z;

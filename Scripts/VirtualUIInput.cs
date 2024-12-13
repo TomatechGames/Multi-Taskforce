@@ -4,9 +4,13 @@ using System;
 public partial class VirtualUIInput : Node
 {
     [Export]
+    PlayerController player;
+    [Export]
     SubViewport reciever;
     [Export]
     Control cursor;
+    [Export]
+    Camera3D screenCam;
     Vector2 vMousePos;
 
     [Export]
@@ -16,6 +20,22 @@ public partial class VirtualUIInput : Node
         vMousePos = reciever.Size / 2;
         cursor.Position = vMousePos;
         Input.MouseMode = Input.MouseModeEnum.Captured;
+    }
+
+    public void EnableInteraction()
+    {
+        InputActive = true;
+        screenCam.MakeCurrent();
+        player.InputActive = false;
+        player.hud.Visible = false;
+    }
+
+    public void DisableInteraction()
+    {
+        InputActive = false;
+        player.MakeCamCurrent();
+        player.InputActive = true;
+        player.hud.Visible = true;
     }
 
     public override void _Input(InputEvent @event)
@@ -44,6 +64,12 @@ public partial class VirtualUIInput : Node
         }
         if (@event is InputEventKey keyEvent)
         {
+            if (keyEvent.Keycode == Key.Escape)
+            {
+                DisableInteraction();
+                GetViewport().SetInputAsHandled();
+                return;
+            }
             //pass
             reciever.PushInput(keyEvent);
             GetViewport().SetInputAsHandled();

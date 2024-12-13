@@ -1,0 +1,64 @@
+[gd_scene load_steps=9 format=3 uid="uid://dui8e8weod0el"]
+
+[ext_resource type="Script" path="res://Scripts/ServerRack.cs" id="1_1xtfa"]
+[ext_resource type="PackedScene" uid="uid://bm27m03h3ux6w" path="res://Scenes/serverInstance.tscn" id="1_76cbo"]
+[ext_resource type="Script" path="res://Scripts/Interaction/InteractionTarget.cs" id="2_blil6"]
+[ext_resource type="Material" uid="uid://bxpkotg182hse" path="res://hoverMat.tres" id="3_d8acf"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_1cdon"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_0lx28"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_b83ih"]
+size = Vector3(1.04775, 1.87125, 0.408447)
+
+[sub_resource type="BoxMesh" id="BoxMesh_a44oi"]
+
+[node name="ServerRack" type="Node3D" node_paths=PackedStringArray("servers")]
+script = ExtResource("1_1xtfa")
+servers = [NodePath("ServerInstance"), NodePath("ServerInstance2"), NodePath("ServerInstance3"), NodePath("ServerInstance4"), NodePath("ServerInstance5"), NodePath("ServerInstance6")]
+
+[node name="DeskMesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 2, 0, 0, 0, 1, 0, 1, 0)
+mesh = SubResource("BoxMesh_1cdon")
+skeleton = NodePath("../..")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="DeskMesh"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DeskMesh/StaticBody3D"]
+shape = SubResource("BoxShape3D_0lx28")
+
+[node name="ServerInstance" parent="." instance=ExtResource("1_76cbo")]
+
+[node name="ServerInstance2" parent="." instance=ExtResource("1_76cbo")]
+transform = Transform3D(0.9, 0, 0, 0, 0.2, 0, 0, 0, 1.1, 0, 0.5, 0)
+
+[node name="ServerInstance3" parent="." instance=ExtResource("1_76cbo")]
+transform = Transform3D(0.9, 0, 0, 0, 0.2, 0, 0, 0, 1.1, 0, 0.8, 0)
+
+[node name="ServerInstance4" parent="." instance=ExtResource("1_76cbo")]
+transform = Transform3D(0.9, 0, 0, 0, 0.2, 0, 0, 0, 1.1, 0, 1.1, 0)
+
+[node name="ServerInstance5" parent="." instance=ExtResource("1_76cbo")]
+transform = Transform3D(0.9, 0, 0, 0, 0.2, 0, 0, 0, 1.1, 0, 1.4, 0)
+
+[node name="ServerInstance6" parent="." instance=ExtResource("1_76cbo")]
+transform = Transform3D(0.9, 0, 0, 0, 0.2, 0, 0, 0, 1.1, 0, 1.7, 0)
+
+[node name="Area3D" type="Area3D" parent="."]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0.08, 0.388207)
+script = ExtResource("2_blil6")
+directionalTolorence = 50.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, -2.98428e-13, 0, 1, 0, 0, 0, 1, -0.00191484, 0.86987, -0.00524902)
+shape = SubResource("BoxShape3D_b83ih")
+
+[node name="InteractMesh" type="MeshInstance3D" parent="Area3D"]
+transform = Transform3D(0.958094, 0, 0, 0, 1.78776, 0, 0, 0, 0.37, 0, 0.880872, 0)
+mesh = SubResource("BoxMesh_a44oi")
+skeleton = NodePath("../../..")
+surface_material_override/0 = ExtResource("3_d8acf")
+
+[connection signal="HoverChanged" from="Area3D" to="Area3D/InteractMesh" method="set_visible"]
+[connection signal="InteractionTriggered" from="Area3D" to="." method="FixOne"]

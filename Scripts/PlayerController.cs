@@ -4,6 +4,8 @@ using System;
 public partial class PlayerController : CharacterBody3D
 {
 	[Export]
+	public Control hud;
+	[Export]
 	RayCast3D testRC;
 	[Export]
 	Camera3D camera;
@@ -21,11 +23,18 @@ public partial class PlayerController : CharacterBody3D
     {
 		currentLookRot.X = Mathf.RadToDeg(camera.Rotation.X);
         currentLookRot.Y = Mathf.RadToDeg(Rotation.Y);
+		camera.MakeCurrent();
     }
 
+	public void MakeCamCurrent() => camera.MakeCurrent();
+
+	[Export]
+	public bool InputActive { get; set; } = true;
     public override void _UnhandledInput(InputEvent inputEvent)
     {
-		if (inputEvent.IsActionPressed("interact"))
+        if (!InputActive)
+            return;
+        if (inputEvent.IsActionPressed("interact"))
         {
             if (testRC.GetCollider() is InteractionTarget interactionTarget)
             {
@@ -57,9 +66,9 @@ public partial class PlayerController : CharacterBody3D
 			{
 				currentlyHovered?.SetHovered(false);
 				currentlyHovered = interactionTarget;
-				currentlyHovered.SetHovered(currentlyHovered.CanInteract(-testRC.GlobalBasis.Z));
-			}
-		}
+            }
+            currentlyHovered?.SetHovered(currentlyHovered.CanInteract(-testRC.GlobalBasis.Z));
+        }
 		else if(currentlyHovered is not null)
 		{
 			currentlyHovered.SetHovered(false);
@@ -69,7 +78,7 @@ public partial class PlayerController : CharacterBody3D
 
     public override void _PhysicsProcess(double delta)
     {
-        Vector2 inputDir = Input.GetVector("move_left", "move_right", "move_forward", "move_backward");
+        Vector2 inputDir = InputActive ? Input.GetVector("move_left", "move_right", "move_forward", "move_backward") : Vector2.Zero;
         Vector3 direction = (Transform.Basis * new Vector3(inputDir.X, 0, inputDir.Y)).Normalized();
 		if (direction == Vector3.Zero)
 		{
