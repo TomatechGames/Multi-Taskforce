@@ -646,13 +646,15 @@ script = ExtResource("10_4u0sc")
 playerController = NodePath("../../Player")
 winOverlay = NodePath("../Win")
 
-[node name="BudgetLabel" type="Label" parent="HUD" node_paths=PackedStringArray("playerController")]
+[node name="BudgetLabel" type="Label" parent="HUD" node_paths=PackedStringArray("playerController", "failOverlay")]
 layout_mode = 1
 offset_right = 79.0
 offset_bottom = 23.0
 text = "$1000"
 script = ExtResource("12_hclt2")
+currentVal = 400
 playerController = NodePath("../../Player")
+failOverlay = NodePath("../Fail")
 
 [node name="TextureRect" type="TextureRect" parent="HUD"]
 layout_mode = 1
