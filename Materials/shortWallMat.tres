@@ -1,0 +1,17 @@
+[gd_resource type="ShaderMaterial" load_steps=4 format=3 uid="uid://dw3y2hx0e748d"]
+
+[ext_resource type="Shader" uid="uid://bq0cmbgtj5d15" path="res://Shaders/ShortWallVShader.tres" id="1_ea5is"]
+
+[sub_resource type="Gradient" id="Gradient_b87b2"]
+interpolation_mode = 1
+offsets = PackedFloat32Array(0, 0.268293, 0.402439, 0.454268, 0.506098, 0.542683, 0.573171)
+colors = PackedColorArray(0.59, 0.560893, 0.3717, 1, 0.72, 0.12, 0, 1, 0.588235, 0.560784, 0.372549, 1, 0.72, 0.12, 0, 1, 0.588235, 0.560784, 0.372549, 1, 0.72, 0.12, 0, 1, 0.588235, 0.560784, 0.372549, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_n6oph"]
+gradient = SubResource("Gradient_b87b2")
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_ea5is")
+shader_parameter/FloatParameter = 0.344
+shader_parameter/gradient = SubResource("GradientTexture1D_n6oph")

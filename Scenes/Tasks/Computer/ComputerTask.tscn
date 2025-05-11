@@ -1,0 +1,122 @@
+[gd_scene load_steps=14 format=3 uid="uid://c48tja3y7ktvs"]
+
+[ext_resource type="Script" path="res://Scripts/TaskSystem/Tasks/Computer/ComputerTaskNode.cs" id="1_wmfjc"]
+[ext_resource type="Script" path="res://Scripts/Interaction/InteractionTarget.cs" id="2_31aw8"]
+[ext_resource type="PackedScene" uid="uid://i871ut3p552b" path="res://Scenes/Tasks/Computer/ComputerWindow.tscn" id="2_jtab4"]
+[ext_resource type="Material" uid="uid://bxpkotg182hse" path="res://hoverMat.tres" id="3_sapn1"]
+[ext_resource type="Script" path="res://Scripts/VirtualUIInput.cs" id="4_jyxmg"]
+[ext_resource type="PackedScene" uid="uid://bsb55dxd5jda0" path="res://Scenes/Tasks/Computer/ComputerDisplay.tscn" id="5_ia50a"]
+[ext_resource type="AudioStream" uid="uid://b3ct2prx6rqyd" path="res://Sounds/MouseClick.ogg" id="6_i35d0"]
+[ext_resource type="Texture2D" uid="uid://cxmkktph2wuqd" path="res://Textures/Cursor.png" id="7_x0ra2"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_x1hae"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_7ddpm"]
+size = Vector3(1.24518, 0.614899, 0.408447)
+
+[sub_resource type="QuadMesh" id="QuadMesh_vspry"]
+size = Vector2(-1.6, 0.9)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_spdmy"]
+viewport_path = NodePath("Screen/SubViewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dga3x"]
+resource_local_to_scene = true
+albedo_texture = SubResource("ViewportTexture_spdmy")
+emission_enabled = true
+emission = Color(0.3, 0.3, 0.3, 1)
+emission_energy_multiplier = 5.0
+emission_operator = 1
+emission_texture = SubResource("ViewportTexture_spdmy")
+
+[node name="ComputerTask" type="Node3D" node_paths=PackedStringArray("computerUI", "blanket")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 2.5, 1, -2)
+script = ExtResource("1_wmfjc")
+window = ExtResource("2_jtab4")
+computerUI = NodePath("Screen/SubViewport/ComputerDisplay")
+blanket = NodePath("Screen/SubViewport/ColorRect")
+
+[node name="KBMesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.85, 0, 0, 0, 1, 0, 0, 0, 0.35, 0, -0.45, -0.258062)
+mesh = SubResource("BoxMesh_x1hae")
+skeleton = NodePath("../../..")
+
+[node name="MouseMesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.12, 0, 0, 0, 1, 0, 0, 0, 0.2, -0.542443, -0.45, -0.258062)
+mesh = SubResource("BoxMesh_x1hae")
+skeleton = NodePath("../../..")
+
+[node name="Area3D" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.42, -0.258)
+script = ExtResource("2_31aw8")
+directionalTolorence = 50.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, -2.98428e-13, 0, 1, 0, 0, 0, 1, -0.0101624, 0.689774, -0.00524902)
+shape = SubResource("BoxShape3D_7ddpm")
+
+[node name="InteractMesh" type="MeshInstance3D" parent="Area3D"]
+transform = Transform3D(1.21, 0, 0, 0, 1, 0, 0, 0, 0.37, 0, 0, 0)
+mesh = SubResource("BoxMesh_x1hae")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = ExtResource("3_sapn1")
+
+[node name="Screen" type="Node3D" parent="." node_paths=PackedStringArray("interactable", "reciever", "cursor", "screenCam", "mouseClick")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+script = ExtResource("4_jyxmg")
+interactable = NodePath("../Area3D")
+reciever = NodePath("SubViewport")
+cursor = NodePath("SubViewport/Mouse")
+screenCam = NodePath("ScreenCam")
+mouseClick = NodePath("AudioStreamPlayer3D")
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="Screen"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.475, -0.479, -0.137)
+stream = ExtResource("6_i35d0")
+volume_db = -25.0
+
+[node name="ScreenMesh2" type="MeshInstance3D" parent="Screen"]
+transform = Transform3D(0.1, 0, 0, 0, 0.92, 0, 0, 0, 0.1, 0, -0.451, 0.081)
+mesh = SubResource("BoxMesh_x1hae")
+skeleton = NodePath("../../../..")
+
+[node name="ScreenMesh" type="MeshInstance3D" parent="Screen"]
+transform = Transform3D(1.62, 0, 0, 0, 0.92, 0, 0, 0, 0.1, 0, -0.00599301, 0.0510001)
+mesh = SubResource("BoxMesh_x1hae")
+skeleton = NodePath("../../../..")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Screen"]
+gi_mode = 2
+mesh = SubResource("QuadMesh_vspry")
+skeleton = NodePath("../../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_dga3x")
+
+[node name="SubViewport" type="SubViewport" parent="Screen"]
+disable_3d = true
+handle_input_locally = false
+size = Vector2i(640, 360)
+render_target_update_mode = 4
+
+[node name="ComputerDisplay" parent="Screen/SubViewport" instance=ExtResource("5_ia50a")]
+
+[node name="Mouse" type="TextureRect" parent="Screen/SubViewport"]
+custom_minimum_size = Vector2(20, 20)
+offset_left = 320.0
+offset_top = 180.0
+offset_right = 330.0
+offset_bottom = 190.0
+mouse_filter = 2
+texture = ExtResource("7_x0ra2")
+expand_mode = 1
+
+[node name="ColorRect" type="ColorRect" parent="Screen/SubViewport"]
+custom_minimum_size = Vector2(640, 360)
+offset_right = 40.0
+offset_bottom = 40.0
+color = Color(0, 0, 0, 1)
+
+[node name="ScreenCam" type="Camera3D" parent="Screen"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, -0.00599301, -0.75)
+
+[connection signal="HoverChanged" from="Area3D" to="Area3D/InteractMesh" method="set_visible"]
+[connection signal="InteractionTriggered" from="Area3D" to="Screen" method="EnableInteraction"]

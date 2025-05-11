@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 public abstract partial class ConfigurableTaskNode<T> : TaskNode where T:TaskResource
 {
-    protected sealed override void PrepareTask(TaskResource config, Dictionary<string, TaskNode> dependancies)
+    public sealed override void PrepareTask(TaskResource config, Dictionary<string, TaskNode> dependancies)
     {
 		ConfigureTask(config is T typedConfig ? typedConfig : null, dependancies);
     }

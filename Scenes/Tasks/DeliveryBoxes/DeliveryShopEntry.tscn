@@ -1,0 +1,60 @@
+[gd_scene load_steps=4 format=3 uid="uid://b8jioecfrxrj4"]
+
+[ext_resource type="Script" path="res://Scripts/TaskSystem/Tasks/DeliveryBoxes/DeliveryBoxShopEntry.cs" id="1_0wkr8"]
+[ext_resource type="Texture2D" uid="uid://djpc61sn43g3" path="res://Textures/T_UI_Drops_Icon_128.png" id="1_or7ep"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7iqse"]
+content_margin_left = 3.0
+content_margin_top = 3.0
+content_margin_right = 3.0
+content_margin_bottom = 3.0
+bg_color = Color(0.2484, 0.2484, 0.2484, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[node name="DeliveryShopEntry" type="PanelContainer" node_paths=PackedStringArray("nameLabel", "iconTarget", "iconContainer", "buyButton")]
+custom_minimum_size = Vector2(0, 60)
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_7iqse")
+script = ExtResource("1_0wkr8")
+nameLabel = NodePath("HBoxContainer/VBoxContainer/Name")
+iconTarget = NodePath("HBoxContainer/MarginContainer/TextureRect")
+iconContainer = NodePath("HBoxContainer/MarginContainer")
+buyButton = NodePath("HBoxContainer/VBoxContainer/Button")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer/MarginContainer"]
+layout_mode = 2
+texture = ExtResource("1_or7ep")
+expand_mode = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 0
+
+[node name="Name" type="Label" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/line_spacing = -3
+theme_override_font_sizes/font_size = 10
+text = "this is a long item name for a"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+text_overrun_behavior = 4
+
+[node name="Button" type="Button" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "$100"

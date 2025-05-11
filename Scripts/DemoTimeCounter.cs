@@ -34,7 +34,7 @@ public partial class DemoTimeCounter : Label
 			while (deltaSum > rate)
 			{
 				deltaSum -= rate;
-				currentTime += 1;
+				//currentTime += 1;
             }
             string secs = (currentTime % 60).ToString();
             if (secs.Length == 1)

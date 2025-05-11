@@ -1,0 +1,11 @@
+[gd_scene load_steps=4 format=3 uid="uid://civt1s0f2x43x"]
+
+[ext_resource type="Script" path="res://Scripts/TaskSystem/Tasks/DeliveryBoxes/DeliveryBoxesTaskNode.cs" id="1_ajrgs"]
+[ext_resource type="PackedScene" uid="uid://cjg3u24fwtid6" path="res://Scenes/Tasks/DeliveryBoxes/DeliveryBoxesShop.tscn" id="2_55n3x"]
+[ext_resource type="PackedScene" uid="uid://b8jioecfrxrj4" path="res://Scenes/Tasks/DeliveryBoxes/DeliveryShopEntry.tscn" id="3_qhad8"]
+
+[node name="DeliveryBoxesTask" type="Node3D"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -2.95, 1, 0)
+script = ExtResource("1_ajrgs")
+shopWindowScene = ExtResource("2_55n3x")
+shopEntryScene = ExtResource("3_qhad8")

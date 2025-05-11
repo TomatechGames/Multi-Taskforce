@@ -4,43 +4,50 @@ using System;
 public partial class VirtualUIInput : Node
 {
     [Export]
-    PlayerController player;
+    Node3D interactable;
     [Export]
     SubViewport reciever;
     [Export]
     Control cursor;
     [Export]
     Camera3D screenCam;
+    [Export]
+    AudioStreamPlayer3D mouseClick;
     Vector2 vMousePos;
 
     [Export]
     public bool InputActive { get; set; }
 
-	public override void _Ready() {
+    public override void _Ready() {
         vMousePos = reciever.Size / 2;
         cursor.Position = vMousePos;
-        Input.MouseMode = Input.MouseModeEnum.Captured;
     }
+
 
     public void EnableInteraction()
     {
         InputActive = true;
         screenCam.MakeCurrent();
-        player.InputActive = false;
-        player.hud.Visible = false;
+        GameplayManager.Player.InputActive = false;
+        GameplayManager.HudVisible = false;
+        if(interactable is not null)
+            interactable.Visible = false;
     }
 
     public void DisableInteraction()
     {
         InputActive = false;
-        player.MakeCamCurrent();
-        player.InputActive = true;
-        player.hud.Visible = true;
+        GameplayManager.Player.MakeCamCurrent();
+        GameplayManager.Player.InputActive = true;
+        GameplayManager.HudVisible = true;
+        if (interactable is not null)
+            interactable.Visible = true;
     }
 
+    bool InputAllowed => InputActive && GameplayManager.GameRunning;
     public override void _Input(InputEvent @event)
     {
-        if (!InputActive)
+        if (!InputAllowed)
             return;
         if (@event is InputEventMouseButton buttonEvent)
         {
@@ -48,6 +55,8 @@ public partial class VirtualUIInput : Node
             buttonEvent.Position = vMousePos;
             reciever.PushInput(buttonEvent);
             GetViewport().SetInputAsHandled();
+            if (buttonEvent.ButtonIndex == MouseButton.Left && buttonEvent.ButtonMask.HasFlag(MouseButtonMask.Left))
+                mouseClick?.Play();
             return;
         }
         if (@event is InputEventMouseMotion motionEvent)

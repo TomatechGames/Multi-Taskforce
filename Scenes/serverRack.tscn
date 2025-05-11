@@ -1,6 +1,5 @@
-[gd_scene load_steps=9 format=3 uid="uid://dui8e8weod0el"]
+[gd_scene load_steps=8 format=3 uid="uid://dui8e8weod0el"]
 
-[ext_resource type="Script" path="res://Scripts/ServerRack.cs" id="1_1xtfa"]
 [ext_resource type="PackedScene" uid="uid://bm27m03h3ux6w" path="res://Scenes/serverInstance.tscn" id="1_76cbo"]
 [ext_resource type="Script" path="res://Scripts/Interaction/InteractionTarget.cs" id="2_blil6"]
 [ext_resource type="Material" uid="uid://bxpkotg182hse" path="res://hoverMat.tres" id="3_d8acf"]
@@ -14,9 +13,7 @@ size = Vector3(1.04775, 1.87125, 0.408447)
 
 [sub_resource type="BoxMesh" id="BoxMesh_a44oi"]
 
-[node name="ServerRack" type="Node3D" node_paths=PackedStringArray("servers")]
-script = ExtResource("1_1xtfa")
-servers = [NodePath("ServerInstance"), NodePath("ServerInstance2"), NodePath("ServerInstance3"), NodePath("ServerInstance4"), NodePath("ServerInstance5"), NodePath("ServerInstance6")]
+[node name="ServerRack" type="Node3D"]
 
 [node name="DeskMesh" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 2, 0, 0, 0, 1, 0, 1, 0)

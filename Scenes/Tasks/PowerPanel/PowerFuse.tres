@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="BaseItem" load_steps=2 format=3 uid="uid://bekqdphiapan1"]
+
+[ext_resource type="Script" path="res://Scripts/ItemSystem/BaseItem.cs" id="1_2h4y1"]
+
+[resource]
+script = ExtResource("1_2h4y1")
+uniqueId = "powerFuse"
+displayName = "Power Fuse"

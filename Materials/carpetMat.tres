@@ -1,0 +1,7 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://chxe1rmyy0h1y"]
+
+[ext_resource type="Shader" uid="uid://c6awwd5ulkm68" path="res://Shaders/carpetShader.tres" id="1_al0j8"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_al0j8")

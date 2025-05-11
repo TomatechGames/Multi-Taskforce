@@ -1,18 +1,43 @@
-[gd_scene load_steps=29 format=3 uid="uid://fcsnub27k01k"]
+[gd_scene load_steps=35 format=3 uid="uid://fcsnub27k01k"]
 
 [ext_resource type="PackedScene" uid="uid://b61ud8vq1uuk0" path="res://Scenes/interactable.tscn" id="1_eiyfc"]
-[ext_resource type="Script" path="res://Scripts/VirtualUIInput.cs" id="1_fec4i"]
 [ext_resource type="PackedScene" uid="uid://dui8e8weod0el" path="res://Scenes/serverRack.tscn" id="1_ltj13"]
-[ext_resource type="PackedScene" uid="uid://bsb55dxd5jda0" path="res://Scenes/ScreenGUI.tscn" id="1_qxavv"]
+[ext_resource type="Script" path="res://Scripts/GameplayManager.cs" id="1_mtixy"]
 [ext_resource type="Script" path="res://Scripts/PlayerController.cs" id="1_xfvjd"]
-[ext_resource type="Material" uid="uid://bxpkotg182hse" path="res://hoverMat.tres" id="2_qcm6g"]
-[ext_resource type="Script" path="res://Scripts/Interaction/InteractionTarget.cs" id="3_dq22i"]
+[ext_resource type="Script" path="res://Scripts/TaskSystem/WorkDay.cs" id="2_wwlt2"]
+[ext_resource type="Script" path="res://Scripts/TaskSystem/Tasks/Computer/ComputerTaskResource.cs" id="3_7dh0f"]
+[ext_resource type="Script" path="res://Scripts/TaskSystem/Tasks/DeliveryBoxes/DeliveryBoxesTaskResource.cs" id="4_iqlec"]
 [ext_resource type="Script" path="res://Scripts/Interaction/TogglePassthrough.cs" id="5_1mr7x"]
+[ext_resource type="Material" uid="uid://chxe1rmyy0h1y" path="res://Materials/carpetMat.tres" id="5_8xbvh"]
+[ext_resource type="Material" uid="uid://dw3y2hx0e748d" path="res://Materials/shortWallMat.tres" id="5_npqq7"]
+[ext_resource type="Script" path="res://Scripts/TaskSystem/Tasks/PowerPanel/PowerPanelTaskResource.cs" id="5_qu3sa"]
 [ext_resource type="Environment" uid="uid://dqibdpiouwoni" path="res://office_environment.tres" id="6_22b8v"]
+[ext_resource type="Material" uid="uid://cn12allm7ov82" path="res://Materials/bigWallMat.tres" id="7_e38tw"]
 [ext_resource type="Script" path="res://Scripts/FPSCounter.cs" id="7_jale7"]
+[ext_resource type="PackedScene" uid="uid://gbi2m5t6724l" path="res://Models/CustomHuman.tscn" id="7_lfctn"]
+[ext_resource type="AudioStream" uid="uid://blxtfu2idsibf" path="res://Sounds/office-ambience-6322.mp3" id="8_gch2d"]
 [ext_resource type="Script" path="res://Scripts/DemoTimeCounter.cs" id="10_4u0sc"]
 [ext_resource type="Script" path="res://Scripts/BudgetCounter.cs" id="12_hclt2"]
+[ext_resource type="PackedScene" uid="uid://c305yxo8whbge" path="res://Scenes/Tasks/CoffeeMachine/CoffeeMachineTask.tscn" id="12_illhn"]
 [ext_resource type="Script" path="res://Scripts/SceneNav.cs" id="13_g32i0"]
+
+[sub_resource type="Resource" id="Resource_up6wi"]
+script = ExtResource("3_7dh0f")
+
+[sub_resource type="Resource" id="Resource_dlik2"]
+script = ExtResource("4_iqlec")
+
+[sub_resource type="Resource" id="Resource_1cn3y"]
+script = ExtResource("5_qu3sa")
+
+[sub_resource type="Resource" id="Resource_i82u8"]
+script = ExtResource("2_wwlt2")
+title = "Demo Day"
+tasks = Array[Object]([SubResource("Resource_up6wi"), SubResource("Resource_dlik2"), SubResource("Resource_1cn3y")])
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_opi14"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_dvodn"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_a0ev3"]
 
@@ -30,32 +55,7 @@ outer_radius = 0.7
 rings = 32
 ring_segments = 16
 
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_opi14"]
-
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_dvodn"]
-
 [sub_resource type="BoxMesh" id="BoxMesh_x1hae"]
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_7ddpm"]
-size = Vector3(1.24518, 0.614899, 0.408447)
-
-[sub_resource type="QuadMesh" id="QuadMesh_vspry"]
-size = Vector2(-1.6, 0.9)
-
-[sub_resource type="ViewportTexture" id="ViewportTexture_spdmy"]
-viewport_path = NodePath("Desk/Screen/SubViewport")
-
-[sub_resource type="ViewportTexture" id="ViewportTexture_eopb6"]
-viewport_path = NodePath("Desk/Screen/SubViewport")
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dga3x"]
-resource_local_to_scene = true
-albedo_texture = SubResource("ViewportTexture_spdmy")
-emission_enabled = true
-emission = Color(0.3, 0.3, 0.3, 1)
-emission_energy_multiplier = 5.0
-emission_operator = 1
-emission_texture = SubResource("ViewportTexture_eopb6")
 
 [sub_resource type="Gradient" id="Gradient_1fghe"]
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
@@ -71,435 +71,21 @@ metadata/_snap_enabled = true
 
 [node name="Node3D" type="Node3D"]
 
-[node name="Building" type="Node3D" parent="."]
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Building"]
-transform = Transform3D(60, 0, 0, 0, 1, 0, 0, 0, 90, 0, -0.5, 0)
-mesh = SubResource("BoxMesh_a0ev3")
-skeleton = NodePath("../..")
-
-[node name="StaticBody3D" type="StaticBody3D" parent="Building/MeshInstance3D"]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Building/MeshInstance3D/StaticBody3D"]
-shape = SubResource("BoxShape3D_vy6at")
-
-[node name="MeshInstance3D4" type="MeshInstance3D" parent="Building"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 6, -2.18557e-08)
-mesh = SubResource("QuadMesh_2emxb")
-skeleton = NodePath("../..")
-metadata/_edit_lock_ = true
-
-[node name="StaticBody3D" type="StaticBody3D" parent="Building/MeshInstance3D4"]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Building/MeshInstance3D4/StaticBody3D"]
-shape = SubResource("BoxShape3D_vy6at")
-
-[node name="MeshInstance3D3" type="MeshInstance3D" parent="Building"]
-transform = Transform3D(60, 0, 0, 0, 1, 0, 0, 0, 90, -0.0110931, 7.5, 0.0190239)
-visible = false
-mesh = SubResource("BoxMesh_a0ev3")
-skeleton = NodePath("../..")
-
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="Building"]
-transform = Transform3D(60, 0, 0, 0, 1, 0, 0, 0, 90, 0, 7.5, 0)
-visible = false
-mesh = SubResource("BoxMesh_a0ev3")
-skeleton = NodePath("../..")
-
-[node name="MeshInstance3D8" type="MeshInstance3D" parent="Building"]
-transform = Transform3D(1, 0, 0, 0, 8, 0, 0, 0, 90, -30, 3.5, 0)
-mesh = SubResource("BoxMesh_a0ev3")
-skeleton = NodePath("../..")
-
-[node name="MeshInstance3D9" type="MeshInstance3D" parent="Building"]
-transform = Transform3D(1, 0, 0, 0, 8, 0, 0, 0, 90, 30, 3.5, 0)
-mesh = SubResource("BoxMesh_a0ev3")
-skeleton = NodePath("../..")
-
-[node name="MeshInstance3D10" type="MeshInstance3D" parent="Building"]
-transform = Transform3D(60, 0, 0, 0, 8, 0, 0, 0, 1, 0, 3.5, 45)
-mesh = SubResource("BoxMesh_a0ev3")
-skeleton = NodePath("../..")
-
-[node name="MeshInstance3D11" type="MeshInstance3D" parent="Building"]
-transform = Transform3D(60, 0, 0, 0, 8, 0, 0, 0, 1, 0, 3.5, -45)
-mesh = SubResource("BoxMesh_a0ev3")
-skeleton = NodePath("../..")
-
-[node name="SpotLight3D2" type="SpotLight3D" parent="Building"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -8.4916, 6.5, -5.54644)
-visible = false
-light_energy = 3.0
-light_bake_mode = 1
-shadow_enabled = true
-spot_range = 10.0
-spot_angle = 70.0
-spot_angle_attenuation = 0.3
-
-[node name="SpotLight3D3" type="SpotLight3D" parent="Building"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -8.5, 6.5, 10)
-visible = false
-light_energy = 3.0
-light_bake_mode = 1
-shadow_enabled = true
-spot_range = 10.0
-spot_angle = 70.0
-spot_angle_attenuation = 0.3
-
-[node name="SpotLight3D4" type="SpotLight3D" parent="Building"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -0.125533, 6.5, 10.4842)
-visible = false
-light_bake_mode = 1
-shadow_enabled = true
-spot_range = 10.0
-spot_angle = 70.0
-spot_angle_attenuation = 0.3
-
-[node name="SpotLight3D5" type="SpotLight3D" parent="Building"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -0.125533, 8, -7.63419)
-visible = false
-light_energy = 3.0
-light_bake_mode = 1
-shadow_enabled = true
-spot_range = 10.0
-spot_angle = 70.0
-spot_angle_attenuation = 0.3
-
-[node name="Cubicle" type="Node3D" parent="."]
-
-[node name="Walls" type="Node3D" parent="Cubicle"]
-
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="Cubicle/Walls"]
-transform = Transform3D(0.1, 0, 0, 0, 4, 0, 0, 0, 9, 3, 1.5, 0)
-mesh = SubResource("BoxMesh_a0ev3")
-skeleton = NodePath("../../..")
-
-[node name="StaticBody3D" type="StaticBody3D" parent="Cubicle/Walls/MeshInstance3D2"]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Cubicle/Walls/MeshInstance3D2/StaticBody3D"]
-shape = SubResource("BoxShape3D_vy6at")
-
-[node name="MeshInstance3D3" type="MeshInstance3D" parent="Cubicle/Walls"]
-transform = Transform3D(0.1, 0, 0, 0, 4, 0, 0, 0, 9, -3, 1.5, -3.5)
-mesh = SubResource("BoxMesh_a0ev3")
-skeleton = NodePath("../../..")
-
-[node name="StaticBody3D" type="StaticBody3D" parent="Cubicle/Walls/MeshInstance3D3"]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Cubicle/Walls/MeshInstance3D3/StaticBody3D"]
-shape = SubResource("BoxShape3D_vy6at")
-
-[node name="MeshInstance3D6" type="MeshInstance3D" parent="Cubicle/Walls"]
-transform = Transform3D(0.2, 0, 0, 0, 4, 0, 0, 0, 8, -3, 1.5, 7)
-mesh = SubResource("BoxMesh_a0ev3")
-skeleton = NodePath("../../..")
-
-[node name="StaticBody3D" type="StaticBody3D" parent="Cubicle/Walls/MeshInstance3D6"]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Cubicle/Walls/MeshInstance3D6/StaticBody3D"]
-shape = SubResource("BoxShape3D_xc1ya")
-
-[node name="MeshInstance3D4" type="MeshInstance3D" parent="Cubicle/Walls"]
-transform = Transform3D(6, 0, 0, 0, 4, 0, 0, 0, 0.1, 0, 1.5, -4.5)
-mesh = SubResource("BoxMesh_a0ev3")
-skeleton = NodePath("../../..")
-
-[node name="StaticBody3D" type="StaticBody3D" parent="Cubicle/Walls/MeshInstance3D4"]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Cubicle/Walls/MeshInstance3D4/StaticBody3D"]
-shape = SubResource("BoxShape3D_vy6at")
-
-[node name="MeshInstance3D5" type="MeshInstance3D" parent="Cubicle/Walls"]
-transform = Transform3D(6, 0, 0, 0, 4, 0, 0, 0, 0.1, 0, 1.5, 4.5)
-mesh = SubResource("BoxMesh_a0ev3")
-skeleton = NodePath("../../..")
-
-[node name="StaticBody3D" type="StaticBody3D" parent="Cubicle/Walls/MeshInstance3D5"]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Cubicle/Walls/MeshInstance3D5/StaticBody3D"]
-shape = SubResource("BoxShape3D_vy6at")
-
-[node name="MeshInstance3D7" type="MeshInstance3D" parent="Cubicle/Walls"]
-transform = Transform3D(0.1, 0, 0, 0, 4, 0, 0, 0, 9, -6, 1.5, 3.5)
-mesh = SubResource("BoxMesh_a0ev3")
-skeleton = NodePath("../../..")
-
-[node name="MeshInstance3D14" type="MeshInstance3D" parent="Cubicle/Walls"]
-transform = Transform3D(0.100012, 0, 0, 0, 4.00047, 0, 0, 0, 37.8044, -6, 5.5, 3.5)
-mesh = SubResource("BoxMesh_a0ev3")
-skeleton = NodePath("../../..")
-
-[node name="MeshInstance3D15" type="MeshInstance3D" parent="Cubicle/Walls"]
-transform = Transform3D(0.100012, 0, 0, 0, 7.80091, 0, 0, 0, 37.8044, 7.25154, 5.5, 3.5)
-mesh = SubResource("BoxMesh_a0ev3")
-skeleton = NodePath("../../..")
-
-[node name="MeshInstance3D8" type="MeshInstance3D" parent="Cubicle/Walls"]
-transform = Transform3D(0.1, 0, 0, 0, 4, 0, 0, 0, 9, -6, 1.5, -7.5)
-mesh = SubResource("BoxMesh_a0ev3")
-skeleton = NodePath("../../..")
-
-[node name="MeshInstance3D9" type="MeshInstance3D" parent="Cubicle/Walls"]
-transform = Transform3D(0.1, 0, 0, 0, 4, 0, 0, 0, 9, -6, 1.5, 15)
-mesh = SubResource("BoxMesh_a0ev3")
-skeleton = NodePath("../../..")
-
-[node name="MeshInstance3D10" type="MeshInstance3D" parent="Cubicle/Walls"]
-transform = Transform3D(0.1, 0, 0, 0, 4, 0, 0, 0, 9, -11.65, 1.5, 15)
-mesh = SubResource("BoxMesh_a0ev3")
-skeleton = NodePath("../../..")
-
-[node name="MeshInstance3D12" type="MeshInstance3D" parent="Cubicle/Walls"]
-transform = Transform3D(0.1, 0, 0, 0, 4, 0, 0, 0, 9, -11.65, 1.5, -7.5)
-mesh = SubResource("BoxMesh_a0ev3")
-skeleton = NodePath("../../..")
-
-[node name="MeshInstance3D11" type="MeshInstance3D" parent="Cubicle/Walls"]
-transform = Transform3D(-4.37114e-09, 0, 18, 0, 4, 0, -0.1, 0, -7.86805e-07, -11.3187, 1.5, 15)
-mesh = SubResource("BoxMesh_a0ev3")
-skeleton = NodePath("../../..")
-
-[node name="MeshInstance3D13" type="MeshInstance3D" parent="Cubicle/Walls"]
-transform = Transform3D(-4.37114e-09, 0, 18, 0, 4, 0, -0.1, 0, -7.86805e-07, -7.52047, 1.5, -10.2)
-mesh = SubResource("BoxMesh_a0ev3")
-skeleton = NodePath("../../..")
-
-[node name="MeshInstance3D16" type="MeshInstance3D" parent="Cubicle/Walls"]
-transform = Transform3D(-4.37114e-09, 0, 18, 0, 6, 0, -0.1, 0, -7.86805e-07, 1.47953, 3.5, -10.2)
-mesh = SubResource("BoxMesh_a0ev3")
-skeleton = NodePath("../../..")
-
-[node name="MeshInstance3D17" type="MeshInstance3D" parent="Cubicle/Walls"]
-transform = Transform3D(-4.37114e-09, 0, 18, 0, 9, 0, -0.1, 0, -7.86805e-07, 1.47953, 2.35486, 9.95)
-mesh = SubResource("BoxMesh_a0ev3")
-skeleton = NodePath("../../..")
-
-[node name="OmniLight3D" type="OmniLight3D" parent="Cubicle"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 5.63623, 5.96046e-08)
-light_size = 0.035
-shadow_opacity = 0.9
-shadow_blur = 2.0
-metadata/_edit_group_ = true
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Cubicle/OmniLight3D"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -1.62114e-08, 0.370872)
-mesh = SubResource("TorusMesh_bhuve")
-
-[node name="SpotLight3D2" type="SpotLight3D" parent="Cubicle/OmniLight3D"]
-light_energy = 2.0
-light_bake_mode = 1
-shadow_enabled = true
-spot_range = 10.0
-spot_angle = 70.0
-spot_angle_attenuation = 0.3
-
-[node name="OmniLight3D2" type="OmniLight3D" parent="Cubicle"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -4.5, 5.63623, 5.96046e-08)
-light_size = 0.035
-shadow_opacity = 0.9
-shadow_blur = 2.0
-metadata/_edit_group_ = true
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Cubicle/OmniLight3D2"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -1.62114e-08, 0.370872)
-mesh = SubResource("TorusMesh_bhuve")
-
-[node name="SpotLight3D2" type="SpotLight3D" parent="Cubicle/OmniLight3D2"]
-light_energy = 2.0
-light_bake_mode = 1
-shadow_enabled = true
-spot_range = 10.0
-spot_angle = 70.0
-spot_angle_attenuation = 0.3
-
-[node name="OmniLight3D3" type="OmniLight3D" parent="Cubicle"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -4.5, 5.63623, 7)
-light_size = 0.035
-shadow_opacity = 0.9
-shadow_blur = 2.0
-metadata/_edit_group_ = true
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Cubicle/OmniLight3D3"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -1.62114e-08, 0.370872)
-mesh = SubResource("TorusMesh_bhuve")
-
-[node name="SpotLight3D2" type="SpotLight3D" parent="Cubicle/OmniLight3D3"]
-light_energy = 2.0
-light_bake_mode = 1
-shadow_enabled = true
-spot_range = 10.0
-spot_angle = 70.0
-spot_angle_attenuation = 0.3
-
-[node name="OmniLight3D7" type="OmniLight3D" parent="Cubicle"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 5.63623, 7)
-light_size = 0.035
-shadow_opacity = 0.9
-shadow_blur = 2.0
-metadata/_edit_group_ = true
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Cubicle/OmniLight3D7"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -1.62114e-08, 0.370872)
-mesh = SubResource("TorusMesh_bhuve")
-
-[node name="SpotLight3D2" type="SpotLight3D" parent="Cubicle/OmniLight3D7"]
-light_energy = 2.0
-light_bake_mode = 1
-shadow_enabled = true
-spot_range = 10.0
-spot_angle = 70.0
-spot_angle_attenuation = 0.3
-
-[node name="OmniLight3D8" type="OmniLight3D" parent="Cubicle"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 4.5, 5.63623, 7)
-light_size = 0.035
-shadow_opacity = 0.9
-shadow_blur = 2.0
-metadata/_edit_group_ = true
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Cubicle/OmniLight3D8"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -1.62114e-08, 0.370872)
-mesh = SubResource("TorusMesh_bhuve")
-
-[node name="SpotLight3D2" type="SpotLight3D" parent="Cubicle/OmniLight3D8"]
-light_energy = 2.0
-light_bake_mode = 1
-shadow_enabled = true
-spot_range = 10.0
-spot_angle = 70.0
-spot_angle_attenuation = 0.3
-
-[node name="OmniLight3D9" type="OmniLight3D" parent="Cubicle"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 4.5, 5.63623, 0)
-light_size = 0.035
-shadow_opacity = 0.9
-shadow_blur = 2.0
-metadata/_edit_group_ = true
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Cubicle/OmniLight3D9"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -1.62114e-08, 0.370872)
-mesh = SubResource("TorusMesh_bhuve")
-
-[node name="SpotLight3D2" type="SpotLight3D" parent="Cubicle/OmniLight3D9"]
-light_energy = 2.0
-light_bake_mode = 1
-shadow_enabled = true
-spot_range = 10.0
-spot_angle = 70.0
-spot_angle_attenuation = 0.3
-
-[node name="OmniLight3D10" type="OmniLight3D" parent="Cubicle"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 4.5, 5.63623, -7)
-light_size = 0.035
-shadow_opacity = 0.9
-shadow_blur = 2.0
-metadata/_edit_group_ = true
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Cubicle/OmniLight3D10"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -1.62114e-08, 0.370872)
-mesh = SubResource("TorusMesh_bhuve")
-
-[node name="SpotLight3D2" type="SpotLight3D" parent="Cubicle/OmniLight3D10"]
-light_energy = 2.0
-light_bake_mode = 1
-shadow_enabled = true
-spot_range = 10.0
-spot_angle = 70.0
-spot_angle_attenuation = 0.3
-
-[node name="OmniLight3D5" type="OmniLight3D" parent="Cubicle"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -8.5, 5.63623, 10.5)
-light_size = 0.035
-shadow_opacity = 0.9
-shadow_blur = 2.0
-metadata/_edit_group_ = true
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Cubicle/OmniLight3D5"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -1.62114e-08, 0.370872)
-mesh = SubResource("TorusMesh_bhuve")
-
-[node name="SpotLight3D2" type="SpotLight3D" parent="Cubicle/OmniLight3D5"]
-light_energy = 2.0
-light_bake_mode = 1
-shadow_enabled = true
-spot_range = 10.0
-spot_angle = 70.0
-spot_angle_attenuation = 0.3
-
-[node name="OmniLight3D4" type="OmniLight3D" parent="Cubicle"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -4.5, 5.63623, -7)
-light_size = 0.035
-shadow_opacity = 0.9
-shadow_blur = 2.0
-metadata/_edit_group_ = true
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Cubicle/OmniLight3D4"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -1.62114e-08, 0.370872)
-mesh = SubResource("TorusMesh_bhuve")
-
-[node name="SpotLight3D2" type="SpotLight3D" parent="Cubicle/OmniLight3D4"]
-light_energy = 2.0
-light_bake_mode = 1
-shadow_enabled = true
-spot_range = 10.0
-spot_angle = 70.0
-spot_angle_attenuation = 0.3
-
-[node name="OmniLight3D11" type="OmniLight3D" parent="Cubicle"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 5.63623, -7)
-light_size = 0.035
-shadow_opacity = 0.9
-shadow_blur = 2.0
-metadata/_edit_group_ = true
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Cubicle/OmniLight3D11"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -1.62114e-08, 0.370872)
-mesh = SubResource("TorusMesh_bhuve")
-
-[node name="SpotLight3D2" type="SpotLight3D" parent="Cubicle/OmniLight3D11"]
-light_energy = 2.0
-light_bake_mode = 1
-shadow_enabled = true
-spot_range = 10.0
-spot_angle = 70.0
-spot_angle_attenuation = 0.3
-
-[node name="OmniLight3D6" type="OmniLight3D" parent="Cubicle"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -8.5, 5.63623, -6)
-light_size = 0.035
-shadow_opacity = 0.9
-shadow_blur = 2.0
-metadata/_edit_group_ = true
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Cubicle/OmniLight3D6"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -1.62114e-08, 0.370872)
-mesh = SubResource("TorusMesh_bhuve")
-
-[node name="SpotLight3D2" type="SpotLight3D" parent="Cubicle/OmniLight3D6"]
-light_energy = 2.0
-light_bake_mode = 1
-shadow_enabled = true
-spot_range = 10.0
-spot_angle = 70.0
-spot_angle_attenuation = 0.3
-
-[node name="Server" parent="." instance=ExtResource("1_ltj13")]
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 2.5, 0, 0)
-
-[node name="Server2" parent="." instance=ExtResource("1_ltj13")]
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 2.5, 0, 1.5)
-
-[node name="Server3" parent="." instance=ExtResource("1_ltj13")]
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 2.5, 0, 3)
-
-[node name="Player" type="CharacterBody3D" parent="." node_paths=PackedStringArray("hud", "testRC", "camera")]
+[node name="GameplayManager" type="Node" parent="." node_paths=PackedStringArray("taskParent", "player", "hud", "taskUIParent")]
+script = ExtResource("1_mtixy")
+debugWorkDay = SubResource("Resource_i82u8")
+taskParent = NodePath("../Tasks")
+player = NodePath("../Player")
+hud = NodePath("../GUI/HUD")
+taskUIParent = NodePath("../GUI/TaskUIPanels")
+
+[node name="Player" type="CharacterBody3D" parent="." node_paths=PackedStringArray("testRC", "camera")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, -3)
 input_ray_pickable = false
 axis_lock_angular_x = true
 axis_lock_angular_z = true
 wall_min_slide_angle = 0.0174533
 script = ExtResource("1_xfvjd")
-hud = NodePath("../HUD")
 testRC = NodePath("Camera3D/RayCast3D")
 camera = NodePath("Camera3D")
 accelleration = 30.0
@@ -507,6 +93,7 @@ lookSensitivity = 150.0
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Player"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+visible = false
 gi_mode = 2
 mesh = SubResource("CapsuleMesh_opi14")
 skeleton = NodePath("../..")
@@ -523,85 +110,505 @@ current = true
 target_position = Vector3(0, 0, -1.5)
 collide_with_areas = true
 
-[node name="Desk" type="Node3D" parent="."]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 2.5, 1, -2)
+[node name="Human" parent="Player" instance=ExtResource("7_lfctn")]
 
-[node name="DeskMesh" type="MeshInstance3D" parent="Desk"]
-transform = Transform3D(2, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
-mesh = SubResource("BoxMesh_x1hae")
-skeleton = NodePath("../..")
+[node name="Building" type="Node3D" parent="."]
 
-[node name="StaticBody3D" type="StaticBody3D" parent="Desk/DeskMesh"]
+[node name="Meshes" type="Node3D" parent="Building"]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Desk/DeskMesh/StaticBody3D"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Building/Meshes"]
+transform = Transform3D(60, 0, 0, 0, 1, 0, 0, 0, 90, 0, -0.5, 0)
+material_override = ExtResource("5_8xbvh")
+mesh = SubResource("BoxMesh_a0ev3")
+skeleton = NodePath("../../..")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Building/Meshes/MeshInstance3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Building/Meshes/MeshInstance3D/StaticBody3D"]
 shape = SubResource("BoxShape3D_vy6at")
 
-[node name="KBMesh" type="MeshInstance3D" parent="Desk"]
-transform = Transform3D(0.85, 0, 0, 0, 1, 0, 0, 0, 0.35, 0, -0.45, -0.258062)
-mesh = SubResource("BoxMesh_x1hae")
-skeleton = NodePath("../..")
-
-[node name="MouseMesh" type="MeshInstance3D" parent="Desk"]
-transform = Transform3D(0.12, 0, 0, 0, 1, 0, 0, 0, 0.2, -0.542443, -0.45, -0.258062)
-mesh = SubResource("BoxMesh_x1hae")
-skeleton = NodePath("../..")
-
-[node name="Area3D" type="Area3D" parent="Desk"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.42, -0.258)
-script = ExtResource("3_dq22i")
-directionalTolorence = 50.0
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Desk/Area3D"]
-transform = Transform3D(1, 0, -2.98428e-13, 0, 1, 0, 0, 0, 1, -0.0101624, 0.689774, -0.00524902)
-shape = SubResource("BoxShape3D_7ddpm")
-
-[node name="InteractMesh" type="MeshInstance3D" parent="Desk/Area3D"]
-transform = Transform3D(1.21, 0, 0, 0, 1, 0, 0, 0, 0.37, 0, 0, 0)
-mesh = SubResource("BoxMesh_x1hae")
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="Building/Meshes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 6, -2.18557e-08)
+mesh = SubResource("QuadMesh_2emxb")
 skeleton = NodePath("../../..")
-surface_material_override/0 = ExtResource("2_qcm6g")
+metadata/_edit_lock_ = true
 
-[node name="Screen" type="Node3D" parent="Desk" node_paths=PackedStringArray("player", "reciever", "cursor", "screenCam")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.505993, 0)
-script = ExtResource("1_fec4i")
-player = NodePath("../../Player")
-reciever = NodePath("SubViewport")
-cursor = NodePath("SubViewport/Mouse")
-screenCam = NodePath("../ScreenCam")
+[node name="StaticBody3D" type="StaticBody3D" parent="Building/Meshes/MeshInstance3D4"]
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Desk/Screen"]
-gi_mode = 2
-mesh = SubResource("QuadMesh_vspry")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Building/Meshes/MeshInstance3D4/StaticBody3D"]
+shape = SubResource("BoxShape3D_vy6at")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="Building/Meshes"]
+transform = Transform3D(60, 0, 0, 0, 1, 0, 0, 0, 90, -0.0110931, 7.5, 0.0190239)
+visible = false
+mesh = SubResource("BoxMesh_a0ev3")
+skeleton = NodePath("../../..")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Building/Meshes"]
+transform = Transform3D(60, 0, 0, 0, 1, 0, 0, 0, 90, 0, 7.5, 0)
+visible = false
+mesh = SubResource("BoxMesh_a0ev3")
+skeleton = NodePath("../../..")
+
+[node name="MeshInstance3D8" type="MeshInstance3D" parent="Building/Meshes"]
+transform = Transform3D(1, 0, 0, 0, 8, 0, 0, 0, 90, -30, 3.5, 0)
+mesh = SubResource("BoxMesh_a0ev3")
+skeleton = NodePath("../../..")
+
+[node name="MeshInstance3D9" type="MeshInstance3D" parent="Building/Meshes"]
+transform = Transform3D(1, 0, 0, 0, 8, 0, 0, 0, 90, 30, 3.5, 0)
+mesh = SubResource("BoxMesh_a0ev3")
+skeleton = NodePath("../../..")
+
+[node name="MeshInstance3D10" type="MeshInstance3D" parent="Building/Meshes"]
+transform = Transform3D(60, 0, 0, 0, 8, 0, 0, 0, 1, 0, 3.5, 45)
+mesh = SubResource("BoxMesh_a0ev3")
+skeleton = NodePath("../../..")
+
+[node name="MeshInstance3D11" type="MeshInstance3D" parent="Building/Meshes"]
+transform = Transform3D(60, 0, 0, 0, 8, 0, 0, 0, 1, 0, 3.5, -45)
+mesh = SubResource("BoxMesh_a0ev3")
+skeleton = NodePath("../../..")
+
+[node name="Lights" type="Node3D" parent="Building"]
+
+[node name="SpotLight3D2" type="SpotLight3D" parent="Building/Lights"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -8.4916, 6.5, -5.54644)
+visible = false
+light_energy = 3.0
+light_bake_mode = 1
+shadow_enabled = true
+spot_range = 10.0
+spot_angle = 70.0
+spot_angle_attenuation = 0.3
+
+[node name="SpotLight3D3" type="SpotLight3D" parent="Building/Lights"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -8.5, 6.5, 10)
+visible = false
+light_energy = 3.0
+light_bake_mode = 1
+shadow_enabled = true
+spot_range = 10.0
+spot_angle = 70.0
+spot_angle_attenuation = 0.3
+
+[node name="SpotLight3D4" type="SpotLight3D" parent="Building/Lights"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -0.125533, 6.5, 10.4842)
+visible = false
+light_bake_mode = 1
+shadow_enabled = true
+spot_range = 10.0
+spot_angle = 70.0
+spot_angle_attenuation = 0.3
+
+[node name="SpotLight3D5" type="SpotLight3D" parent="Building/Lights"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -0.125533, 8, -7.63419)
+visible = false
+light_energy = 3.0
+light_bake_mode = 1
+shadow_enabled = true
+spot_range = 10.0
+spot_angle = 70.0
+spot_angle_attenuation = 0.3
+
+[node name="Sounds" type="Node3D" parent="Building"]
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="Building/Sounds"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.56071, 9.53674e-07, -7.27329)
+stream = ExtResource("8_gch2d")
+volume_db = -15.0
+pitch_scale = 0.96
+autoplay = true
+attenuation_filter_cutoff_hz = 2650.0
+parameters/looping = true
+
+[node name="AudioStreamPlayer3D2" type="AudioStreamPlayer3D" parent="Building/Sounds"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.56071, 9.53674e-07, 11.0338)
+stream = ExtResource("8_gch2d")
+volume_db = -15.0
+pitch_scale = 1.05
+autoplay = true
+attenuation_filter_cutoff_hz = 1425.0
+parameters/looping = true
+
+[node name="AudioStreamPlayer3D3" type="AudioStreamPlayer3D" parent="Building/Sounds"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.8198, 3.49188, -1.87492)
+stream = ExtResource("8_gch2d")
+volume_db = -10.0
+autoplay = true
+attenuation_filter_cutoff_hz = 585.0
+parameters/looping = true
+
+[node name="Cubicle" type="Node3D" parent="."]
+
+[node name="Walls" type="Node3D" parent="Cubicle"]
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Cubicle/Walls"]
+transform = Transform3D(-0.1, 0, -7.86805e-07, 0, 4, 0, 8.74228e-09, 0, -9, 3, 1.5, 0)
+material_override = ExtResource("5_npqq7")
+mesh = SubResource("BoxMesh_a0ev3")
+skeleton = NodePath("../../..")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Cubicle/Walls/MeshInstance3D2"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Cubicle/Walls/MeshInstance3D2/StaticBody3D"]
+shape = SubResource("BoxShape3D_vy6at")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="Cubicle/Walls"]
+transform = Transform3D(0.1, 0, 0, 0, 4, 0, 0, 0, 9, -3, 1.5, -3.5)
+material_override = ExtResource("5_npqq7")
+mesh = SubResource("BoxMesh_a0ev3")
+skeleton = NodePath("../../..")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Cubicle/Walls/MeshInstance3D3"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Cubicle/Walls/MeshInstance3D3/StaticBody3D"]
+shape = SubResource("BoxShape3D_vy6at")
+
+[node name="MeshInstance3D6" type="MeshInstance3D" parent="Cubicle/Walls"]
+transform = Transform3D(0.2, 0, 0, 0, 4, 0, 0, 0, 8, -3, 1.5, 7)
+material_override = ExtResource("5_npqq7")
+mesh = SubResource("BoxMesh_a0ev3")
+skeleton = NodePath("../../..")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Cubicle/Walls/MeshInstance3D6"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Cubicle/Walls/MeshInstance3D6/StaticBody3D"]
+shape = SubResource("BoxShape3D_xc1ya")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="Cubicle/Walls"]
+transform = Transform3D(6, 0, 0, 0, 4, 0, 0, 0, 0.1, 0, 1.5, -4.5)
+material_override = ExtResource("5_npqq7")
+mesh = SubResource("BoxMesh_a0ev3")
+skeleton = NodePath("../../..")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Cubicle/Walls/MeshInstance3D4"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Cubicle/Walls/MeshInstance3D4/StaticBody3D"]
+shape = SubResource("BoxShape3D_vy6at")
+
+[node name="MeshInstance3D5" type="MeshInstance3D" parent="Cubicle/Walls"]
+transform = Transform3D(6, 0, 0, 0, 4, 0, 0, 0, 0.1, 0, 1.5, 4.5)
+material_override = ExtResource("5_npqq7")
+mesh = SubResource("BoxMesh_a0ev3")
+skeleton = NodePath("../../..")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Cubicle/Walls/MeshInstance3D5"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Cubicle/Walls/MeshInstance3D5/StaticBody3D"]
+shape = SubResource("BoxShape3D_vy6at")
+
+[node name="MeshInstance3D7" type="MeshInstance3D" parent="Cubicle/Walls"]
+transform = Transform3D(0.1, 0, 0, 0, 4, 0, 0, 0, 9, -6, 1.5, 3.5)
+material_override = ExtResource("7_e38tw")
+mesh = SubResource("BoxMesh_a0ev3")
+skeleton = NodePath("../../..")
+
+[node name="MeshInstance3D14" type="MeshInstance3D" parent="Cubicle/Walls"]
+transform = Transform3D(0.100012, 0, 0, 0, 4.00047, 0, 0, 0, 37.8044, -6, 5.5, 3.5)
+material_override = ExtResource("7_e38tw")
+mesh = SubResource("BoxMesh_a0ev3")
+skeleton = NodePath("../../..")
+
+[node name="MeshInstance3D15" type="MeshInstance3D" parent="Cubicle/Walls"]
+transform = Transform3D(0.100012, 0, 0, 0, 7.80091, 0, 0, 0, 37.8044, 7.25154, 3.76066, 3.5)
+material_override = ExtResource("7_e38tw")
+mesh = SubResource("BoxMesh_a0ev3")
+skeleton = NodePath("../../..")
+
+[node name="MeshInstance3D8" type="MeshInstance3D" parent="Cubicle/Walls"]
+transform = Transform3D(0.1, 0, 0, 0, 4, 0, 0, 0, 9, -6, 1.5, -7.5)
+material_override = ExtResource("7_e38tw")
+mesh = SubResource("BoxMesh_a0ev3")
+skeleton = NodePath("../../..")
+
+[node name="MeshInstance3D9" type="MeshInstance3D" parent="Cubicle/Walls"]
+transform = Transform3D(0.1, 0, 0, 0, 4, 0, 0, 0, 9, -6, 1.5, 15)
+mesh = SubResource("BoxMesh_a0ev3")
+skeleton = NodePath("../../..")
+
+[node name="MeshInstance3D10" type="MeshInstance3D" parent="Cubicle/Walls"]
+transform = Transform3D(0.1, 0, 0, 0, 4, 0, 0, 0, 9, -11.65, 1.5, 15)
+material_override = ExtResource("5_npqq7")
+mesh = SubResource("BoxMesh_a0ev3")
+skeleton = NodePath("../../..")
+
+[node name="MeshInstance3D12" type="MeshInstance3D" parent="Cubicle/Walls"]
+transform = Transform3D(0.1, 0, 0, 0, 4, 0, 0, 0, 9, -11.65, 1.5, -7.5)
+material_override = ExtResource("5_npqq7")
+mesh = SubResource("BoxMesh_a0ev3")
+skeleton = NodePath("../../..")
+
+[node name="MeshInstance3D11" type="MeshInstance3D" parent="Cubicle/Walls"]
+transform = Transform3D(-4.37114e-09, 0, 18, 0, 4, 0, -0.1, 0, -7.86805e-07, -11.3187, 1.5, 15)
+material_override = ExtResource("5_npqq7")
+mesh = SubResource("BoxMesh_a0ev3")
+skeleton = NodePath("../../..")
+
+[node name="MeshInstance3D13" type="MeshInstance3D" parent="Cubicle/Walls"]
+transform = Transform3D(-4.37114e-09, 0, -18, 0, 4, 0, 0.1, 0, -7.86805e-07, -7.52047, 1.5, -10.4969)
+material_override = ExtResource("5_npqq7")
+mesh = SubResource("BoxMesh_a0ev3")
+skeleton = NodePath("../../..")
+
+[node name="MeshInstance3D16" type="MeshInstance3D" parent="Cubicle/Walls"]
+transform = Transform3D(-4.37114e-09, 0, 18, 0, 7, 0, -0.1, 0, -7.86805e-07, 1.47953, 2.88041, -10.2)
+material_override = ExtResource("7_e38tw")
+mesh = SubResource("BoxMesh_a0ev3")
+skeleton = NodePath("../../..")
+
+[node name="MeshInstance3D17" type="MeshInstance3D" parent="Cubicle/Walls"]
+transform = Transform3D(-4.37114e-09, 0, 18, 0, 9, 0, -0.1, 0, -7.86805e-07, 1.47953, 2.35486, 9.95)
+material_override = ExtResource("7_e38tw")
+mesh = SubResource("BoxMesh_a0ev3")
+skeleton = NodePath("../../..")
+
+[node name="Lights" type="Node3D" parent="Cubicle"]
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Cubicle/Lights"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 5.63623, 5.96046e-08)
+light_size = 0.035
+shadow_opacity = 0.9
+shadow_blur = 2.0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Cubicle/Lights/OmniLight3D"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -1.62114e-08, 0.370872)
+mesh = SubResource("TorusMesh_bhuve")
+
+[node name="SpotLight3D2" type="SpotLight3D" parent="Cubicle/Lights/OmniLight3D"]
+light_energy = 2.0
+light_bake_mode = 1
+shadow_enabled = true
+spot_range = 10.0
+spot_angle = 70.0
+spot_angle_attenuation = 0.3
+
+[node name="OmniLight3D2" type="OmniLight3D" parent="Cubicle/Lights"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -4.5, 5.63623, 5.96046e-08)
+light_size = 0.035
+shadow_opacity = 0.9
+shadow_blur = 2.0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Cubicle/Lights/OmniLight3D2"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -1.62114e-08, 0.370872)
+mesh = SubResource("TorusMesh_bhuve")
+
+[node name="SpotLight3D2" type="SpotLight3D" parent="Cubicle/Lights/OmniLight3D2"]
+light_energy = 2.0
+light_bake_mode = 1
+shadow_enabled = true
+spot_range = 10.0
+spot_angle = 70.0
+spot_angle_attenuation = 0.3
+
+[node name="OmniLight3D3" type="OmniLight3D" parent="Cubicle/Lights"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -4.5, 5.63623, 7)
+light_size = 0.035
+shadow_opacity = 0.9
+shadow_blur = 2.0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Cubicle/Lights/OmniLight3D3"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -1.62114e-08, 0.370872)
+mesh = SubResource("TorusMesh_bhuve")
+
+[node name="SpotLight3D2" type="SpotLight3D" parent="Cubicle/Lights/OmniLight3D3"]
+light_energy = 2.0
+light_bake_mode = 1
+shadow_enabled = true
+spot_range = 10.0
+spot_angle = 70.0
+spot_angle_attenuation = 0.3
+
+[node name="OmniLight3D7" type="OmniLight3D" parent="Cubicle/Lights"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 5.63623, 7)
+light_size = 0.035
+shadow_opacity = 0.9
+shadow_blur = 2.0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Cubicle/Lights/OmniLight3D7"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -1.62114e-08, 0.370872)
+mesh = SubResource("TorusMesh_bhuve")
+
+[node name="SpotLight3D2" type="SpotLight3D" parent="Cubicle/Lights/OmniLight3D7"]
+light_energy = 2.0
+light_bake_mode = 1
+shadow_enabled = true
+spot_range = 10.0
+spot_angle = 70.0
+spot_angle_attenuation = 0.3
+
+[node name="OmniLight3D8" type="OmniLight3D" parent="Cubicle/Lights"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 4.5, 5.63623, 7)
+light_size = 0.035
+shadow_opacity = 0.9
+shadow_blur = 2.0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Cubicle/Lights/OmniLight3D8"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -1.62114e-08, 0.370872)
+mesh = SubResource("TorusMesh_bhuve")
+
+[node name="SpotLight3D2" type="SpotLight3D" parent="Cubicle/Lights/OmniLight3D8"]
+light_energy = 2.0
+light_bake_mode = 1
+shadow_enabled = true
+spot_range = 10.0
+spot_angle = 70.0
+spot_angle_attenuation = 0.3
+
+[node name="OmniLight3D9" type="OmniLight3D" parent="Cubicle/Lights"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 4.5, 5.63623, 0)
+light_size = 0.035
+shadow_opacity = 0.9
+shadow_blur = 2.0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Cubicle/Lights/OmniLight3D9"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -1.62114e-08, 0.370872)
+mesh = SubResource("TorusMesh_bhuve")
+
+[node name="SpotLight3D2" type="SpotLight3D" parent="Cubicle/Lights/OmniLight3D9"]
+light_energy = 2.0
+light_bake_mode = 1
+shadow_enabled = true
+spot_range = 10.0
+spot_angle = 70.0
+spot_angle_attenuation = 0.3
+
+[node name="OmniLight3D10" type="OmniLight3D" parent="Cubicle/Lights"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 4.5, 5.63623, -7)
+light_size = 0.035
+shadow_opacity = 0.9
+shadow_blur = 2.0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Cubicle/Lights/OmniLight3D10"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -1.62114e-08, 0.370872)
+mesh = SubResource("TorusMesh_bhuve")
+
+[node name="SpotLight3D2" type="SpotLight3D" parent="Cubicle/Lights/OmniLight3D10"]
+light_energy = 2.0
+light_bake_mode = 1
+shadow_enabled = true
+spot_range = 10.0
+spot_angle = 70.0
+spot_angle_attenuation = 0.3
+
+[node name="OmniLight3D5" type="OmniLight3D" parent="Cubicle/Lights"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -8.5, 5.63623, 10.5)
+light_size = 0.035
+shadow_opacity = 0.9
+shadow_blur = 2.0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Cubicle/Lights/OmniLight3D5"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -1.62114e-08, 0.370872)
+mesh = SubResource("TorusMesh_bhuve")
+
+[node name="SpotLight3D2" type="SpotLight3D" parent="Cubicle/Lights/OmniLight3D5"]
+light_energy = 2.0
+light_bake_mode = 1
+shadow_enabled = true
+spot_range = 10.0
+spot_angle = 70.0
+spot_angle_attenuation = 0.3
+
+[node name="OmniLight3D4" type="OmniLight3D" parent="Cubicle/Lights"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -4.5, 5.63623, -7)
+light_size = 0.035
+shadow_opacity = 0.9
+shadow_blur = 2.0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Cubicle/Lights/OmniLight3D4"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -1.62114e-08, 0.370872)
+mesh = SubResource("TorusMesh_bhuve")
+
+[node name="SpotLight3D2" type="SpotLight3D" parent="Cubicle/Lights/OmniLight3D4"]
+light_energy = 2.0
+light_bake_mode = 1
+shadow_enabled = true
+spot_range = 10.0
+spot_angle = 70.0
+spot_angle_attenuation = 0.3
+
+[node name="OmniLight3D11" type="OmniLight3D" parent="Cubicle/Lights"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 5.63623, -7)
+light_size = 0.035
+shadow_opacity = 0.9
+shadow_blur = 2.0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Cubicle/Lights/OmniLight3D11"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -1.62114e-08, 0.370872)
+mesh = SubResource("TorusMesh_bhuve")
+
+[node name="SpotLight3D2" type="SpotLight3D" parent="Cubicle/Lights/OmniLight3D11"]
+light_energy = 2.0
+light_bake_mode = 1
+shadow_enabled = true
+spot_range = 10.0
+spot_angle = 70.0
+spot_angle_attenuation = 0.3
+
+[node name="OmniLight3D6" type="OmniLight3D" parent="Cubicle/Lights"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -8.5, 5.63623, -6)
+light_size = 0.035
+shadow_opacity = 0.9
+shadow_blur = 2.0
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Cubicle/Lights/OmniLight3D6"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -1.62114e-08, 0.370872)
+mesh = SubResource("TorusMesh_bhuve")
+
+[node name="SpotLight3D2" type="SpotLight3D" parent="Cubicle/Lights/OmniLight3D6"]
+light_energy = 2.0
+light_bake_mode = 1
+shadow_enabled = true
+spot_range = 10.0
+spot_angle = 70.0
+spot_angle_attenuation = 0.3
+
+[node name="DeskMesh" type="MeshInstance3D" parent="Cubicle"]
+transform = Transform3D(-8.74228e-08, 0, 1, 0, 1, 0, -2, 0, -4.37114e-08, 2.5, 0.5, -2)
+mesh = SubResource("BoxMesh_x1hae")
 skeleton = NodePath("../..")
-surface_material_override/0 = SubResource("StandardMaterial3D_dga3x")
 
-[node name="SubViewport" type="SubViewport" parent="Desk/Screen"]
-disable_3d = true
-handle_input_locally = false
-size = Vector2i(640, 360)
-render_target_update_mode = 4
+[node name="StaticBody3D" type="StaticBody3D" parent="Cubicle/DeskMesh"]
 
-[node name="ScreenGUI" parent="Desk/Screen/SubViewport" instance=ExtResource("1_qxavv")]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Cubicle/DeskMesh/StaticBody3D"]
+shape = SubResource("BoxShape3D_vy6at")
 
-[node name="Mouse" type="ColorRect" parent="Desk/Screen/SubViewport"]
-custom_minimum_size = Vector2(10, 10)
-offset_left = 320.0
-offset_top = 180.0
-offset_right = 330.0
-offset_bottom = 190.0
-mouse_filter = 2
+[node name="DeskMesh2" type="MeshInstance3D" parent="Cubicle"]
+transform = Transform3D(2, 0, 1.06581e-14, 0, 1, 0, -2.13163e-14, 0, 1, 0.5, 0.5, 3.5)
+mesh = SubResource("BoxMesh_x1hae")
+skeleton = NodePath("../..")
 
-[node name="ColorRect2" type="ColorRect" parent="Desk/Screen/SubViewport/Mouse"]
-custom_minimum_size = Vector2(14, 7)
-layout_mode = 0
-offset_top = 10.0
-offset_right = 14.0
-offset_bottom = 17.0
-rotation = -0.785398
-mouse_filter = 2
+[node name="StaticBody3D" type="StaticBody3D" parent="Cubicle/DeskMesh2"]
 
-[node name="ScreenCam" type="Camera3D" parent="Desk"]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0.5, -0.75)
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Cubicle/DeskMesh2/StaticBody3D"]
+shape = SubResource("BoxShape3D_vy6at")
+
+[node name="Tasks" type="Node3D" parent="."]
+
+[node name="CoffeeMachineTask" parent="Tasks" instance=ExtResource("12_illhn")]
+
+[node name="Human" parent="Tasks" instance=ExtResource("7_lfctn")]
+transform = Transform3D(1.31134e-07, 0, 1, 0, 1, 0, -1, 0, 1.31134e-07, -3.5, 0, 2)
+
+[node name="Server" parent="." instance=ExtResource("1_ltj13")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 2.5, 0, 0)
+
+[node name="Server2" parent="." instance=ExtResource("1_ltj13")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 2.5, 0, 1.5)
+
+[node name="Server3" parent="." instance=ExtResource("1_ltj13")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 2.5, 0, 3)
 
 [node name="Interactable" parent="." instance=ExtResource("1_eiyfc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 4.5)
@@ -615,7 +622,7 @@ toggleState = true
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = ExtResource("6_22b8v")
 
-[node name="HUD" type="Control" parent="."]
+[node name="GUI" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -626,14 +633,16 @@ size_flags_horizontal = 10
 size_flags_vertical = 3
 mouse_filter = 2
 
-[node name="FPSLabel" type="Label" parent="HUD"]
-visible = false
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 23.0
-script = ExtResource("7_jale7")
+[node name="HUD" type="Control" parent="GUI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
 
-[node name="TimeLabel" type="Label" parent="HUD" node_paths=PackedStringArray("playerController", "winOverlay")]
+[node name="TimeLabel" type="Label" parent="GUI/HUD" node_paths=PackedStringArray("playerController", "winOverlay")]
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
@@ -643,20 +652,20 @@ offset_bottom = 23.0
 grow_horizontal = 0
 text = "Time: 0:00"
 script = ExtResource("10_4u0sc")
-playerController = NodePath("../../Player")
-winOverlay = NodePath("../Win")
+playerController = NodePath("../../../Player")
+winOverlay = NodePath("../../Win")
 
-[node name="BudgetLabel" type="Label" parent="HUD" node_paths=PackedStringArray("playerController", "failOverlay")]
+[node name="BudgetLabel" type="Label" parent="GUI/HUD" node_paths=PackedStringArray("playerController", "failOverlay")]
 layout_mode = 1
 offset_right = 79.0
 offset_bottom = 23.0
 text = "$1000"
 script = ExtResource("12_hclt2")
 currentVal = 400
-playerController = NodePath("../../Player")
-failOverlay = NodePath("../Fail")
+playerController = NodePath("../../../Player")
+failOverlay = NodePath("../../Fail")
 
-[node name="TextureRect" type="TextureRect" parent="HUD"]
+[node name="TextureRect" type="TextureRect" parent="GUI/HUD"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -672,7 +681,23 @@ grow_vertical = 2
 mouse_filter = 2
 texture = SubResource("GradientTexture2D_i53m6")
 
-[node name="Win" type="VBoxContainer" parent="HUD"]
+[node name="TaskUIPanels" type="Control" parent="GUI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="FPSLabel" type="Label" parent="GUI"]
+visible = false
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+script = ExtResource("7_jale7")
+
+[node name="Win" type="VBoxContainer" parent="GUI"]
 visible = false
 layout_mode = 1
 anchors_preset = 8
@@ -680,25 +705,25 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -20.0
-offset_right = 20.0
-offset_bottom = 20.0
+offset_left = -315.5
+offset_top = -72.5
+offset_right = 315.5
+offset_bottom = 72.5
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Label" type="Label" parent="HUD/Win"]
+[node name="Label" type="Label" parent="GUI/Win"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 64
 text = "Work Day Complate!"
 
-[node name="Button" type="Button" parent="HUD/Win"]
+[node name="Button" type="Button" parent="GUI/Win"]
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 32
 text = "Return to Menu"
 
-[node name="Fail" type="VBoxContainer" parent="HUD"]
+[node name="Fail" type="VBoxContainer" parent="GUI"]
 visible = false
 layout_mode = 1
 anchors_preset = 8
@@ -706,35 +731,34 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -20.0
-offset_right = 20.0
-offset_bottom = 20.0
+offset_left = -267.5
+offset_top = -118.0
+offset_right = 267.5
+offset_bottom = 118.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Label" type="Label" parent="HUD/Fail"]
+[node name="Label" type="Label" parent="GUI/Fail"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 64
 text = "Budget Depleted.
 Game Over"
 horizontal_alignment = 1
 
-[node name="Button" type="Button" parent="HUD/Fail"]
+[node name="Button" type="Button" parent="GUI/Fail"]
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 32
 text = "Return to Menu"
 
-[node name="MenuSceneTarget" type="Node" parent="HUD"]
+[node name="MenuSceneTarget" type="Node" parent="GUI"]
 script = ExtResource("13_g32i0")
 SceneFile = "res://Scenes/MainMenu.tscn"
 
-[connection signal="HoverChanged" from="Desk/Area3D" to="Desk/Area3D/InteractMesh" method="set_visible"]
-[connection signal="InteractionTriggered" from="Desk/Area3D" to="Desk/Screen" method="EnableInteraction"]
-[connection signal="pressed" from="Desk/Screen/SubViewport/ScreenGUI/Button" to="Desk/Screen" method="DisableInteraction"]
-[connection signal="InteractionTriggered" from="Interactable" to="Interactable/Toggle" method="Toggle"]
-[connection signal="pressed" from="HUD/Win/Button" to="HUD/MenuSceneTarget" method="LoadScene"]
-[connection signal="pressed" from="HUD/Fail/Button" to="HUD/MenuSceneTarget" method="LoadScene"]
+[node name="OverviewCam" type="Camera3D" parent="."]
+transform = Transform3D(0.751264, 0.262118, -0.60572, 0, 0.917755, 0.397148, 0.660002, -0.298363, 0.689476, -2.59, 3.206, 3.83)
+current = true
 
-[editable path="Desk/Screen/SubViewport/ScreenGUI"]
+[connection signal="InteractionTriggered" from="Interactable" to="Interactable/Toggle" method="Toggle"]
+[connection signal="pressed" from="GUI/Win/Button" to="GUI/MenuSceneTarget" method="LoadScene"]
+[connection signal="pressed" from="GUI/Fail/Button" to="GUI/MenuSceneTarget" method="LoadScene"]

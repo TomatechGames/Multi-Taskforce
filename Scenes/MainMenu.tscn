@@ -1,6 +1,19 @@
-[gd_scene load_steps=2 format=3 uid="uid://dnb42j35fwxtl"]
+[gd_scene load_steps=7 format=3 uid="uid://dnb42j35fwxtl"]
 
 [ext_resource type="Script" path="res://Scripts/SceneNav.cs" id="1_0dbs2"]
+[ext_resource type="Texture2D" uid="uid://dtmkvjv4nqqyu" path="res://Textures/MTFGameplay.png" id="1_cwpo7"]
+[ext_resource type="Texture2D" uid="uid://dcdgpijpnfs65" path="res://Textures/MTFLogoFull.png" id="3_kwy2m"]
+[ext_resource type="AudioStream" uid="uid://blxtfu2idsibf" path="res://Sounds/office-ambience-6322.mp3" id="4_sw870"]
+
+[sub_resource type="Gradient" id="Gradient_hlyhn"]
+colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_2m4ux"]
+gradient = SubResource("Gradient_hlyhn")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.5, 0)
+metadata/_snap_enabled = true
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -10,7 +23,19 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_cwpo7")
+expand_mode = 1
+stretch_mode = 6
+
 [node name="Label" type="Label" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -42,5 +67,37 @@ text = "Play"
 [node name="GameplaySceneTarget" type="Node" parent="."]
 script = ExtResource("1_0dbs2")
 SceneFile = "res://Scenes/Gameplay.tscn"
+
+[node name="TextureRect2" type="TextureRect" parent="."]
+custom_minimum_size = Vector2(0, 400)
+layout_mode = 0
+offset_left = -50.0
+offset_top = -50.0
+offset_right = 661.111
+offset_bottom = 350.0
+texture = ExtResource("3_kwy2m")
+expand_mode = 3
+
+[node name="TextureRect3" type="TextureRect" parent="TextureRect2"]
+show_behind_parent = true
+custom_minimum_size = Vector2(0, 400)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_2m4ux")
+expand_mode = 3
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.727, 9.53674e-07, -5.52197)
+stream = ExtResource("4_sw870")
+volume_db = -10.0
+autoplay = true
+attenuation_filter_cutoff_hz = 3025.0
+parameters/looping = true
+
+[node name="Camera3D" type="Camera3D" parent="."]
 
 [connection signal="pressed" from="Button" to="GameplaySceneTarget" method="LoadScene"]

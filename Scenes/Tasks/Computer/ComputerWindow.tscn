@@ -1,0 +1,151 @@
+[gd_scene load_steps=5 format=3 uid="uid://i871ut3p552b"]
+
+[ext_resource type="Script" path="res://Scripts/TaskSystem/Tasks/Computer/ComputerWindow.cs" id="1_s6blp"]
+[ext_resource type="Script" path="res://Scripts/TaskSystem/Tasks/Computer/ComputerWindowDragger.cs" id="2_4eclf"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v30oh"]
+content_margin_left = 3.0
+content_margin_top = 3.0
+content_margin_right = 3.0
+content_margin_bottom = 3.0
+bg_color = Color(0, 0.18, 0.6, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r8gn6"]
+bg_color = Color(1, 1, 1, 1)
+
+[node name="ComputerWindow" type="PanelContainer" node_paths=PackedStringArray("contentParent", "titleLabel", "minimiseBtn")]
+custom_minimum_size = Vector2(150, 50)
+offset_right = 150.0
+offset_bottom = 27.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_v30oh")
+script = ExtResource("1_s6blp")
+contentParent = NodePath("VBoxContainer/PanelContainer")
+titleLabel = NodePath("VBoxContainer/MarginContainer/HBoxContainer/Label")
+minimiseBtn = NodePath("VBoxContainer/MarginContainer/HBoxContainer/Button")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="ComputerWindowDragger" type="BaseButton" parent="VBoxContainer/MarginContainer" node_paths=PackedStringArray("target")]
+_import_path = NodePath("")
+unique_name_in_owner = false
+process_mode = 0
+process_priority = 0
+process_physics_priority = 0
+process_thread_group = 0
+physics_interpolation_mode = 2
+auto_translate_mode = 0
+editor_description = ""
+visible = true
+modulate = Color(1, 1, 1, 1)
+self_modulate = Color(1, 1, 1, 1)
+show_behind_parent = false
+top_level = false
+clip_children = 0
+light_mask = 1
+visibility_layer = 1
+z_index = 0
+z_as_relative = true
+y_sort_enabled = false
+texture_filter = 0
+texture_repeat = 0
+material = null
+use_parent_material = false
+clip_contents = false
+custom_minimum_size = Vector2(0, 0)
+layout_direction = 0
+layout_mode = 2
+size_flags_horizontal = 1
+size_flags_vertical = 1
+size_flags_stretch_ratio = 1.0
+localize_numeral_system = true
+tooltip_text = ""
+focus_neighbor_left = NodePath("")
+focus_neighbor_top = NodePath("")
+focus_neighbor_right = NodePath("")
+focus_neighbor_bottom = NodePath("")
+focus_next = NodePath("")
+focus_previous = NodePath("")
+focus_mode = 2
+mouse_filter = 1
+mouse_force_pass_scroll_events = true
+mouse_default_cursor_shape = 0
+theme = null
+theme_type_variation = &""
+disabled = false
+toggle_mode = false
+button_pressed = false
+action_mode = 1
+button_mask = 1
+keep_pressed_outside = false
+button_group = null
+shortcut = null
+shortcut_feedback = true
+shortcut_in_tooltip = true
+script = ExtResource("2_4eclf")
+target = NodePath("../../..")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/line_spacing = -6
+theme_override_font_sizes/font_size = 12
+text = "Window Title"
+vertical_alignment = 1
+
+[node name="Button" type="Button" parent="VBoxContainer/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(17, 0)
+layout_mode = 2
+mouse_filter = 1
+theme_override_font_sizes/font_size = 10
+
+[node name="Label" type="Label" parent="VBoxContainer/MarginContainer/HBoxContainer/Button"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -5.0
+offset_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "_"
+horizontal_alignment = 1
+
+[node name="Button2" type="Button" parent="VBoxContainer/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(17, 0)
+layout_mode = 2
+mouse_filter = 1
+theme_override_font_sizes/font_size = 10
+
+[node name="Label" type="Label" parent="VBoxContainer/MarginContainer/HBoxContainer/Button2"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -5.0
+offset_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "x"
+horizontal_alignment = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_r8gn6")
+
+[connection signal="pressed" from="VBoxContainer/MarginContainer/HBoxContainer/Button" to="." method="ToggleMinimised"]
+[connection signal="pressed" from="VBoxContainer/MarginContainer/HBoxContainer/Button2" to="." method="ToggleMinimised"]

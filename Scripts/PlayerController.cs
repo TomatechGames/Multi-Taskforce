@@ -1,10 +1,11 @@
 using Godot;
 using System;
 
+[GlobalClass]
 public partial class PlayerController : CharacterBody3D
 {
-	[Export]
-	public Control hud;
+	[Signal]
+	public delegate void SomeSignalEventHandler(bool test);
 	[Export]
 	RayCast3D testRC;
 	[Export]
@@ -26,14 +27,17 @@ public partial class PlayerController : CharacterBody3D
 		camera.MakeCurrent();
     }
 
+	public ItemContainer inventory { get; private set; } = new();
+
 	public void MakeCamCurrent() => camera.MakeCurrent();
 
 	[Export]
 	public bool InputActive { get; set; } = true;
+	bool InputAllowed => InputActive && GameplayManager.GameRunning;
     public override void _UnhandledInput(InputEvent inputEvent)
     {
-        if (!InputActive)
-            return;
+		if (!InputAllowed)
+			return;
         if (inputEvent.IsActionPressed("interact"))
         {
             if (testRC.GetCollider() is InteractionTarget interactionTarget)
@@ -45,9 +49,10 @@ public partial class PlayerController : CharacterBody3D
         }
 		if(inputEvent is InputEventMouseMotion mouseMovement)
 		{
-			var screenSize = GetWindow().Size;
-            float smallestSize = Mathf.Min(screenSize.X, screenSize.Y);
-			Vector2 lookDelta = mouseMovement.Relative * (1 / smallestSize) * lookSensitivity;
+			//var screenSize = GetWindow().Size;
+			//float smallestSize = Mathf.Min(screenSize.X, screenSize.Y);
+			//Vector2 lookDelta = mouseMovement.Relative * (1 / smallestSize) * lookSensitivity;
+			Vector2 lookDelta = mouseMovement.Relative * 0.2f;
             currentLookRot -= new Vector3(lookDelta.Y, lookDelta.X, 0);
 			currentLookRot.X = Mathf.Clamp(currentLookRot.X, -89, 89);
 			currentLookRot.Y = ((currentLookRot.Y + 540) % 360) - 180;
@@ -78,7 +83,7 @@ public partial class PlayerController : CharacterBody3D
 
     public override void _PhysicsProcess(double delta)
     {
-        Vector2 inputDir = InputActive ? Input.GetVector("move_left", "move_right", "move_forward", "move_backward") : Vector2.Zero;
+        Vector2 inputDir = InputAllowed ? Input.GetVector("move_left", "move_right", "move_forward", "move_backward") : Vector2.Zero;
         Vector3 direction = (Transform.Basis * new Vector3(inputDir.X, 0, inputDir.Y)).Normalized();
 		if (direction == Vector3.Zero)
 		{
