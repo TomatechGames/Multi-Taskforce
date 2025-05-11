@@ -29,7 +29,7 @@ public partial class VirtualUIInput : Node
         InputActive = true;
         screenCam.MakeCurrent();
         GameplayManager.Player.InputActive = false;
-        GameplayManager.HudVisible = false;
+        GameplayManager.PlayerHudVisible = false;
         if(interactable is not null)
             interactable.Visible = false;
     }
@@ -39,7 +39,7 @@ public partial class VirtualUIInput : Node
         InputActive = false;
         GameplayManager.Player.MakeCamCurrent();
         GameplayManager.Player.InputActive = true;
-        GameplayManager.HudVisible = true;
+        GameplayManager.PlayerHudVisible = true;
         if (interactable is not null)
             interactable.Visible = true;
     }

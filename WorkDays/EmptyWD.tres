@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="WorkDay" load_steps=2 format=3 uid="uid://cl88qm7dki6oc"]
+
+[ext_resource type="Script" path="res://Scripts/TaskSystem/WorkDay.cs" id="1_6opvg"]
+
+[resource]
+script = ExtResource("1_6opvg")
+id = "testday"
+title = "Test Day"
+timeScale = 7
+budget = 1000
+tasks = Array[Object]([])

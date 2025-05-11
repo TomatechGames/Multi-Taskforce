@@ -26,7 +26,7 @@ public partial class RealUIInput : Node
         screenCam.MakeCurrent();
         GameplayManager.SetMouseVisible(true);
         GameplayManager.Player.InputActive = false;
-        GameplayManager.HudVisible = false;
+        GameplayManager.PlayerHudVisible = false;
         overlay.Visible = true;
         InputActive = true;
         if (interactable is not null)
@@ -39,7 +39,7 @@ public partial class RealUIInput : Node
         player.MakeCamCurrent();
         GameplayManager.SetMouseVisible(false);
         GameplayManager.Player.InputActive = true;
-        GameplayManager.HudVisible = true;
+        GameplayManager.PlayerHudVisible = true;
         overlay.Visible = false;
         InputActive = false;
         if (interactable is not null)

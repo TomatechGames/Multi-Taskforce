@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-public partial class PowerPanelTaskNode : TaskNode
+public partial class PowerPanelTaskNode : ConfigurableTaskNode<PowerPanelTaskResource>
 {
     public override string TaskId => "PowerPanel";
     public override string[] TaskDependancies => new string[] { "DeliveryBoxes" };
@@ -38,8 +38,7 @@ public partial class PowerPanelTaskNode : TaskNode
     public event Action PowerStateChanged;
     bool hasPower = true;
     public bool HasPower => hasPower;
-
-    public override void PrepareTask(TaskResource config, Dictionary<string, TaskNode> dependancies)
+    protected override void PrepareTask(Dictionary<string, TaskNode> dependancies)
     {
         var deliveries = dependancies["DeliveryBoxes"] as DeliveryBoxesTaskNode;
         deliveries.RegisterDeliveryBox(deliveryBox);
@@ -62,7 +61,7 @@ public partial class PowerPanelTaskNode : TaskNode
 
     public override void StartTask()
     {
-
+        cooldown = config.fullCooldown/2;
     }
 
     public void TweenCover(bool open)
@@ -84,18 +83,20 @@ public partial class PowerPanelTaskNode : TaskNode
         }
     }
 
-    int penaltyPerMissing = GameplayManager.TicksPerSecond * 3;
-    int fullCooldown = GameplayManager.TicksPerSecond * 8;
     int cooldown = 0;
-    int failWeight = 15;
     int targetWeight = 1;
     public override void TickTask()
     {
         cooldown--;
         if (cooldown < 0)
         {
-            cooldown = fullCooldown - (penaltyPerMissing * fuseStates.Count(s => s != 2));
-            float targetPercent = targetWeight / (float)(targetWeight + failWeight);
+            var missing = fuseStates.Count(s => s != 2);
+            if (missing == 2)
+            {
+
+            }
+            cooldown = config.fullCooldown - (config.cooldownPenaltyPerMissing * missing);
+            float targetPercent = targetWeight / (float)(targetWeight + config.failWeight);
             if (GD.Randf() > targetPercent)
             {
                 targetWeight++;
@@ -104,6 +105,7 @@ public partial class PowerPanelTaskNode : TaskNode
             var targetIdx = GD.RandRange(0, fuseButtons.Length - 1);
             if (fuseStates[targetIdx] != 2)
                 return;
+            GameplayManager.ChangeBudget(-config.costPenaltyPerMissing * missing);
             targetWeight = 1;
             fuseStates[targetIdx] = 1;
             fuseCores[targetIdx].Visible = false;
@@ -152,6 +154,6 @@ public partial class PowerPanelTaskNode : TaskNode
         replenishSound?.Play();
         UpdateReplenishButton();
         ValidateFuses();
-        cooldown = fullCooldown;
+        cooldown = config.fullCooldown;
     }
 }

@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://bsb55dxd5jda0"]
 
-[ext_resource type="Texture2D" uid="uid://cvk0byiiso8ur" path="res://icon.png" id="1_gsu65"]
 [ext_resource type="Theme" uid="uid://di5wcm3atxdf5" path="res://Themes/new_theme.tres" id="1_ixxd1"]
+[ext_resource type="Texture2D" uid="uid://dx1c1ghp5f0uw" path="res://Textures/MTFLogoSquare.png" id="2_puy0w"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_el40a"]
 content_margin_left = 3.0
@@ -28,7 +28,6 @@ grow_vertical = 2
 color = Color(0.59, 0.788167, 1, 1)
 
 [node name="TextureRect" type="TextureRect" parent="."]
-self_modulate = Color(0.5, 0.5, 0.5, 1)
 custom_minimum_size = Vector2(128, 128)
 layout_mode = 1
 anchors_preset = 8
@@ -42,7 +41,7 @@ offset_right = 64.0
 offset_bottom = 64.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("1_gsu65")
+texture = ExtResource("2_puy0w")
 expand_mode = 1
 
 [node name="MarginContainer" type="MarginContainer" parent="."]

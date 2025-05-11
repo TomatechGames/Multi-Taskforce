@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://cqukuvxuxp6hg" path="res://Models/DeliveryBox.glb" id="2_aqnko"]
 [ext_resource type="Script" path="res://Scripts/Interaction/InteractionTarget.cs" id="2_p8x6l"]
 [ext_resource type="Material" uid="uid://bxpkotg182hse" path="res://hoverMat.tres" id="3_l0dh8"]
-[ext_resource type="AudioStream" uid="uid://caswtaonght4u" path="res://Sounds/cash-register-purchase-87313.mp3" id="4_1pnip"]
+[ext_resource type="AudioStream" uid="uid://caswtaonght4u" path="res://Sounds/DeliveryBox/cash-register-purchase-87313.mp3" id="4_1pnip"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_crgxa"]
 size = Vector3(0.5, 0.5, 0.25)

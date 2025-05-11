@@ -3,9 +3,6 @@ using System;
 
 public partial class DemoTimeCounter : Label
 {
-    public static DemoTimeCounter Instance;
-    [Export]
-	PlayerController playerController;
 	[Export]
 	Control winOverlay;
 	[Export]
@@ -19,15 +16,12 @@ public partial class DemoTimeCounter : Label
 
     public override void _Ready()
     {
-		Instance = this;
 		deltaSum = rate;
     }
 
     double deltaSum = 0;
 	public override void _Process(double delta)
 	{
-		if (BudgetCounter.Instance.isEmpty || IsComplete)
-			return;
 		deltaSum += delta;
 		if (deltaSum >= rate)
 		{
@@ -53,7 +47,6 @@ public partial class DemoTimeCounter : Label
 		done = true;
 
         Input.MouseMode = Input.MouseModeEnum.Visible;
-        playerController.InputActive = false;
 		winOverlay.Visible = true;
     }
 }

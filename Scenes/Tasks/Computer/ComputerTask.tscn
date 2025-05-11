@@ -6,7 +6,7 @@
 [ext_resource type="Material" uid="uid://bxpkotg182hse" path="res://hoverMat.tres" id="3_sapn1"]
 [ext_resource type="Script" path="res://Scripts/VirtualUIInput.cs" id="4_jyxmg"]
 [ext_resource type="PackedScene" uid="uid://bsb55dxd5jda0" path="res://Scenes/Tasks/Computer/ComputerDisplay.tscn" id="5_ia50a"]
-[ext_resource type="AudioStream" uid="uid://b3ct2prx6rqyd" path="res://Sounds/MouseClick.ogg" id="6_i35d0"]
+[ext_resource type="AudioStream" uid="uid://b3ct2prx6rqyd" path="res://Sounds/Computer/MouseClick.ogg" id="6_i35d0"]
 [ext_resource type="Texture2D" uid="uid://cxmkktph2wuqd" path="res://Textures/Cursor.png" id="7_x0ra2"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_x1hae"]

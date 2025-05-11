@@ -7,8 +7,11 @@ public abstract partial class ConfigurableTaskNode<T> : TaskNode where T:TaskRes
 {
     public sealed override void PrepareTask(TaskResource config, Dictionary<string, TaskNode> dependancies)
     {
-		ConfigureTask(config is T typedConfig ? typedConfig : null, dependancies);
+        this.config = config is T typedConfig ? typedConfig : null;
+        PrepareTask(dependancies);
     }
 
-    protected abstract void ConfigureTask(T config, Dictionary<string, TaskNode> dependancies);
+    protected T config {  get; private set; }
+
+    protected abstract void PrepareTask(Dictionary<string, TaskNode> dependancies);
 }

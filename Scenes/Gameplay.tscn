@@ -1,43 +1,36 @@
-[gd_scene load_steps=35 format=3 uid="uid://fcsnub27k01k"]
+[gd_scene load_steps=26 format=3 uid="uid://fcsnub27k01k"]
 
 [ext_resource type="PackedScene" uid="uid://b61ud8vq1uuk0" path="res://Scenes/interactable.tscn" id="1_eiyfc"]
 [ext_resource type="PackedScene" uid="uid://dui8e8weod0el" path="res://Scenes/serverRack.tscn" id="1_ltj13"]
-[ext_resource type="Script" path="res://Scripts/GameplayManager.cs" id="1_mtixy"]
+[ext_resource type="Script" path="res://Scripts/GameplayManager.cs" id="1_onylu"]
 [ext_resource type="Script" path="res://Scripts/PlayerController.cs" id="1_xfvjd"]
-[ext_resource type="Script" path="res://Scripts/TaskSystem/WorkDay.cs" id="2_wwlt2"]
-[ext_resource type="Script" path="res://Scripts/TaskSystem/Tasks/Computer/ComputerTaskResource.cs" id="3_7dh0f"]
-[ext_resource type="Script" path="res://Scripts/TaskSystem/Tasks/DeliveryBoxes/DeliveryBoxesTaskResource.cs" id="4_iqlec"]
+[ext_resource type="Resource" uid="uid://dm7lny1pkc7oi" path="res://WorkDays/TestingWD.tres" id="2_mjvx4"]
 [ext_resource type="Script" path="res://Scripts/Interaction/TogglePassthrough.cs" id="5_1mr7x"]
 [ext_resource type="Material" uid="uid://chxe1rmyy0h1y" path="res://Materials/carpetMat.tres" id="5_8xbvh"]
 [ext_resource type="Material" uid="uid://dw3y2hx0e748d" path="res://Materials/shortWallMat.tres" id="5_npqq7"]
-[ext_resource type="Script" path="res://Scripts/TaskSystem/Tasks/PowerPanel/PowerPanelTaskResource.cs" id="5_qu3sa"]
 [ext_resource type="Environment" uid="uid://dqibdpiouwoni" path="res://office_environment.tres" id="6_22b8v"]
 [ext_resource type="Material" uid="uid://cn12allm7ov82" path="res://Materials/bigWallMat.tres" id="7_e38tw"]
 [ext_resource type="Script" path="res://Scripts/FPSCounter.cs" id="7_jale7"]
 [ext_resource type="PackedScene" uid="uid://gbi2m5t6724l" path="res://Models/CustomHuman.tscn" id="7_lfctn"]
 [ext_resource type="AudioStream" uid="uid://blxtfu2idsibf" path="res://Sounds/office-ambience-6322.mp3" id="8_gch2d"]
-[ext_resource type="Script" path="res://Scripts/DemoTimeCounter.cs" id="10_4u0sc"]
-[ext_resource type="Script" path="res://Scripts/BudgetCounter.cs" id="12_hclt2"]
 [ext_resource type="PackedScene" uid="uid://c305yxo8whbge" path="res://Scenes/Tasks/CoffeeMachine/CoffeeMachineTask.tscn" id="12_illhn"]
 [ext_resource type="Script" path="res://Scripts/SceneNav.cs" id="13_g32i0"]
-
-[sub_resource type="Resource" id="Resource_up6wi"]
-script = ExtResource("3_7dh0f")
-
-[sub_resource type="Resource" id="Resource_dlik2"]
-script = ExtResource("4_iqlec")
-
-[sub_resource type="Resource" id="Resource_1cn3y"]
-script = ExtResource("5_qu3sa")
-
-[sub_resource type="Resource" id="Resource_i82u8"]
-script = ExtResource("2_wwlt2")
-title = "Demo Day"
-tasks = Array[Object]([SubResource("Resource_up6wi"), SubResource("Resource_dlik2"), SubResource("Resource_1cn3y")])
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_opi14"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_dvodn"]
+
+[sub_resource type="Gradient" id="Gradient_1fghe"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_i53m6"]
+gradient = SubResource("Gradient_1fghe")
+width = 8
+height = 8
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.5, 0)
+metadata/_snap_enabled = true
 
 [sub_resource type="BoxMesh" id="BoxMesh_a0ev3"]
 
@@ -57,26 +50,19 @@ ring_segments = 16
 
 [sub_resource type="BoxMesh" id="BoxMesh_x1hae"]
 
-[sub_resource type="Gradient" id="Gradient_1fghe"]
-colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_i53m6"]
-gradient = SubResource("Gradient_1fghe")
-width = 8
-height = 8
-fill = 1
-fill_from = Vector2(0.5, 0.5)
-fill_to = Vector2(0.5, 0)
-metadata/_snap_enabled = true
-
 [node name="Node3D" type="Node3D"]
 
-[node name="GameplayManager" type="Node" parent="." node_paths=PackedStringArray("taskParent", "player", "hud", "taskUIParent")]
-script = ExtResource("1_mtixy")
-debugWorkDay = SubResource("Resource_i82u8")
+[node name="GameplayManager" type="Node" parent="." node_paths=PackedStringArray("taskParent", "player", "hud", "playerHud", "budgetLabel", "timeLabel", "failOverlay", "winOverlay", "taskUIParent")]
+script = ExtResource("1_onylu")
+debugWorkDay = ExtResource("2_mjvx4")
 taskParent = NodePath("../Tasks")
 player = NodePath("../Player")
 hud = NodePath("../GUI/HUD")
+playerHud = NodePath("../GUI/HUD/PlayerHud")
+budgetLabel = NodePath("../GUI/HUD/BudgetLabel")
+timeLabel = NodePath("../GUI/HUD/TimeLabel")
+failOverlay = NodePath("../GUI/Fail")
+winOverlay = NodePath("../GUI/Win")
 taskUIParent = NodePath("../GUI/TaskUIPanels")
 
 [node name="Player" type="CharacterBody3D" parent="." node_paths=PackedStringArray("testRC", "camera")]
@@ -111,6 +97,160 @@ target_position = Vector3(0, 0, -1.5)
 collide_with_areas = true
 
 [node name="Human" parent="Player" instance=ExtResource("7_lfctn")]
+cast_shadow = 3
+
+[node name="GUI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 10
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="HUD" type="Control" parent="GUI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="TimeLabel" type="Label" parent="GUI/HUD"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -23.0
+offset_right = 79.0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 20
+text = "Time: 0:00"
+
+[node name="Label" type="Label" parent="GUI/HUD"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_right = 0.5
+grow_horizontal = 2
+text = "Budget"
+horizontal_alignment = 1
+
+[node name="BudgetLabel" type="Label" parent="GUI/HUD"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_right = 0.5
+offset_top = 15.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(1, 0.966667, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 10
+theme_override_font_sizes/font_size = 32
+text = "$1000"
+horizontal_alignment = 1
+
+[node name="PlayerHud" type="Control" parent="GUI/HUD"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="TextureRect" type="TextureRect" parent="GUI/HUD/PlayerHud"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -4.0
+offset_top = -4.0
+offset_right = 4.0
+offset_bottom = 4.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = SubResource("GradientTexture2D_i53m6")
+
+[node name="TaskUIPanels" type="Control" parent="GUI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="FPSLabel" type="Label" parent="GUI"]
+visible = false
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+script = ExtResource("7_jale7")
+
+[node name="Win" type="VBoxContainer" parent="GUI"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -315.5
+offset_top = -72.5
+offset_right = 315.5
+offset_bottom = 72.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="GUI/Win"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 64
+text = "Work Day Complate!"
+
+[node name="Button" type="Button" parent="GUI/Win"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 32
+text = "Return to Menu"
+
+[node name="Fail" type="VBoxContainer" parent="GUI"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -267.5
+offset_top = -118.0
+offset_right = 267.5
+offset_bottom = 118.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="GUI/Fail"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 64
+text = "Budget Depleted.
+Game Over"
+horizontal_alignment = 1
+
+[node name="Button" type="Button" parent="GUI/Fail"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 32
+text = "Return to Menu"
+
+[node name="MenuSceneTarget" type="Node" parent="GUI"]
+script = ExtResource("13_g32i0")
+SceneFile = "res://Scenes/MainMenu.tscn"
 
 [node name="Building" type="Node3D" parent="."]
 
@@ -597,6 +737,7 @@ shape = SubResource("BoxShape3D_vy6at")
 [node name="Tasks" type="Node3D" parent="."]
 
 [node name="CoffeeMachineTask" parent="Tasks" instance=ExtResource("12_illhn")]
+visible = false
 
 [node name="Server" parent="." instance=ExtResource("1_ltj13")]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 2.5, 0, 0)
@@ -619,143 +760,10 @@ toggleState = true
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = ExtResource("6_22b8v")
 
-[node name="GUI" type="Control" parent="."]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 10
-size_flags_vertical = 3
-mouse_filter = 2
-
-[node name="HUD" type="Control" parent="GUI"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-
-[node name="TimeLabel" type="Label" parent="GUI/HUD" node_paths=PackedStringArray("playerController", "winOverlay")]
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -79.0
-offset_bottom = 23.0
-grow_horizontal = 0
-text = "Time: 0:00"
-script = ExtResource("10_4u0sc")
-playerController = NodePath("../../../Player")
-winOverlay = NodePath("../../Win")
-
-[node name="BudgetLabel" type="Label" parent="GUI/HUD" node_paths=PackedStringArray("playerController", "failOverlay")]
-layout_mode = 1
-offset_right = 79.0
-offset_bottom = 23.0
-text = "$1000"
-script = ExtResource("12_hclt2")
-currentVal = 400
-playerController = NodePath("../../../Player")
-failOverlay = NodePath("../../Fail")
-
-[node name="TextureRect" type="TextureRect" parent="GUI/HUD"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -4.0
-offset_top = -4.0
-offset_right = 4.0
-offset_bottom = 4.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-texture = SubResource("GradientTexture2D_i53m6")
-
-[node name="TaskUIPanels" type="Control" parent="GUI"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-
-[node name="FPSLabel" type="Label" parent="GUI"]
-visible = false
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 23.0
-script = ExtResource("7_jale7")
-
-[node name="Win" type="VBoxContainer" parent="GUI"]
-visible = false
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -315.5
-offset_top = -72.5
-offset_right = 315.5
-offset_bottom = 72.5
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Label" type="Label" parent="GUI/Win"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 64
-text = "Work Day Complate!"
-
-[node name="Button" type="Button" parent="GUI/Win"]
-layout_mode = 2
-size_flags_horizontal = 4
-theme_override_font_sizes/font_size = 32
-text = "Return to Menu"
-
-[node name="Fail" type="VBoxContainer" parent="GUI"]
-visible = false
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -267.5
-offset_top = -118.0
-offset_right = 267.5
-offset_bottom = 118.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Label" type="Label" parent="GUI/Fail"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 64
-text = "Budget Depleted.
-Game Over"
-horizontal_alignment = 1
-
-[node name="Button" type="Button" parent="GUI/Fail"]
-layout_mode = 2
-size_flags_horizontal = 4
-theme_override_font_sizes/font_size = 32
-text = "Return to Menu"
-
-[node name="MenuSceneTarget" type="Node" parent="GUI"]
-script = ExtResource("13_g32i0")
-SceneFile = "res://Scenes/MainMenu.tscn"
-
 [node name="OverviewCam" type="Camera3D" parent="."]
 transform = Transform3D(0.751264, 0.262118, -0.60572, 0, 0.917755, 0.397148, 0.660002, -0.298363, 0.689476, -2.59, 3.206, 3.83)
 current = true
 
-[connection signal="InteractionTriggered" from="Interactable" to="Interactable/Toggle" method="Toggle"]
 [connection signal="pressed" from="GUI/Win/Button" to="GUI/MenuSceneTarget" method="LoadScene"]
 [connection signal="pressed" from="GUI/Fail/Button" to="GUI/MenuSceneTarget" method="LoadScene"]
+[connection signal="InteractionTriggered" from="Interactable" to="Interactable/Toggle" method="Toggle"]

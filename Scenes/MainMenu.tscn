@@ -1,9 +1,25 @@
-[gd_scene load_steps=7 format=3 uid="uid://dnb42j35fwxtl"]
+[gd_scene load_steps=13 format=3 uid="uid://dnb42j35fwxtl"]
 
 [ext_resource type="Script" path="res://Scripts/SceneNav.cs" id="1_0dbs2"]
 [ext_resource type="Texture2D" uid="uid://dtmkvjv4nqqyu" path="res://Textures/MTFGameplay.png" id="1_cwpo7"]
+[ext_resource type="Script" path="res://Scripts/WorkdaySelector.cs" id="3_0krux"]
 [ext_resource type="Texture2D" uid="uid://dcdgpijpnfs65" path="res://Textures/MTFLogoFull.png" id="3_kwy2m"]
+[ext_resource type="Resource" uid="uid://bxsf3el44170t" path="res://WorkDays/Gameplay/EasyEmails.tres" id="4_pfami"]
 [ext_resource type="AudioStream" uid="uid://blxtfu2idsibf" path="res://Sounds/office-ambience-6322.mp3" id="4_sw870"]
+[ext_resource type="Resource" uid="uid://c4vgm1wyft5tc" path="res://WorkDays/Gameplay/EasyFuses.tres" id="5_lvmcg"]
+[ext_resource type="Resource" uid="uid://bdlskof75eakq" path="res://WorkDays/Gameplay/EasyBoth.tres" id="6_gleq8"]
+[ext_resource type="Resource" uid="uid://tnsq3vphgufu" path="res://WorkDays/Gameplay/HardBoth.tres" id="7_u4fih"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s1emi"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.323, 0.85, 0.82365, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
 
 [sub_resource type="Gradient" id="Gradient_hlyhn"]
 colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 0)
@@ -62,11 +78,86 @@ offset_bottom = -70.0
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_font_sizes/font_size = 32
-text = "Play"
+text = "   Play   "
 
 [node name="GameplaySceneTarget" type="Node" parent="."]
 script = ExtResource("1_0dbs2")
 SceneFile = "res://Scenes/Gameplay.tscn"
+
+[node name="PanelContainer" type="PanelContainer" parent="." node_paths=PackedStringArray("buttonParent", "playPanel", "dayName", "highscore")]
+visible = false
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.6
+anchor_top = 0.5
+anchor_right = 0.6
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_s1emi")
+script = ExtResource("3_0krux")
+workDays = Array[Object]([ExtResource("4_pfami"), ExtResource("5_lvmcg"), ExtResource("6_gleq8"), ExtResource("7_u4fih")])
+buttonParent = NodePath("VBoxContainer/VBoxContainer")
+playPanel = NodePath("../PanelContainer2")
+dayName = NodePath("../PanelContainer2/VBoxContainer/Label2")
+highscore = NodePath("../PanelContainer2/VBoxContainer/HBoxContainer/PanelContainer/Label2")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Work Days: "
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="PanelContainer2" type="PanelContainer" parent="."]
+visible = false
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.75
+anchor_top = 0.5
+anchor_right = 0.75
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_s1emi")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer2"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="PanelContainer2/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "Day 1"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer2/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer2/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Highscore: "
+
+[node name="PanelContainer" type="PanelContainer" parent="PanelContainer2/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label2" type="Label" parent="PanelContainer2/VBoxContainer/HBoxContainer/PanelContainer"]
+layout_mode = 2
+text = "No Highscore"
+horizontal_alignment = 1
+
+[node name="Button" type="Button" parent="PanelContainer2/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Begin"
 
 [node name="TextureRect2" type="TextureRect" parent="."]
 custom_minimum_size = Vector2(0, 400)
@@ -100,4 +191,6 @@ parameters/looping = true
 
 [node name="Camera3D" type="Camera3D" parent="."]
 
-[connection signal="pressed" from="Button" to="GameplaySceneTarget" method="LoadScene"]
+[connection signal="pressed" from="Button" to="Button" method="set_visible" binds= [false]]
+[connection signal="pressed" from="Button" to="PanelContainer" method="set_visible" binds= [true]]
+[connection signal="pressed" from="PanelContainer2/VBoxContainer/Button" to="GameplaySceneTarget" method="LoadScene"]

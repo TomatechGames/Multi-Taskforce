@@ -45,7 +45,6 @@ public partial class ServerInstance : Node
             if (timeSinceDrained < 0)
             {
                 timeSinceDrained = drainColldown;
-                BudgetCounter.Instance.Drain(1);
             }
         }
     }

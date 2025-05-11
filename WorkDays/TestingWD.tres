@@ -1,0 +1,38 @@
+[gd_resource type="Resource" script_class="WorkDay" load_steps=10 format=3 uid="uid://dm7lny1pkc7oi"]
+
+[ext_resource type="Script" path="res://Scripts/TaskSystem/WorkDay.cs" id="1_pybr2"]
+[ext_resource type="Script" path="res://Scripts/TaskSystem/Tasks/Computer/ComputerTaskResource.cs" id="2_x05md"]
+[ext_resource type="Script" path="res://Scripts/TaskSystem/Tasks/DeliveryBoxes/DeliveryBoxesTaskResource.cs" id="3_a7qlh"]
+[ext_resource type="Script" path="res://Scripts/TaskSystem/Tasks/Email/EmailTaskResource.cs" id="4_iwnr8"]
+[ext_resource type="Script" path="res://Scripts/TaskSystem/Tasks/PowerPanel/PowerPanelTaskResource.cs" id="5_3dfmi"]
+
+[sub_resource type="Resource" id="Resource_8yowh"]
+script = ExtResource("2_x05md")
+
+[sub_resource type="Resource" id="Resource_jx441"]
+script = ExtResource("3_a7qlh")
+
+[sub_resource type="Resource" id="Resource_d6il7"]
+script = ExtResource("4_iwnr8")
+minCooldown = 200
+maxCooldown = 300
+penaltyThreshold = 240
+penaltyFrequency = 10
+penaltyAmount = 1
+completionThreshold = 50
+
+[sub_resource type="Resource" id="Resource_hyld6"]
+script = ExtResource("5_3dfmi")
+cooldownPenaltyPerMissing = 30
+fullCooldown = 100
+costPenaltyPerMissing = 20
+drainPerEmptyPulse = 3
+failWeight = 10
+initialTargetWeight = 10
+
+[resource]
+script = ExtResource("1_pybr2")
+title = "Debug Work Day"
+timeScale = 7
+budget = 1000
+tasks = Array[Object]([SubResource("Resource_8yowh"), SubResource("Resource_jx441"), SubResource("Resource_d6il7"), SubResource("Resource_hyld6")])

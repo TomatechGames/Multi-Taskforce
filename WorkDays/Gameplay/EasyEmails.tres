@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="WorkDay" load_steps=7 format=3 uid="uid://bxsf3el44170t"]
+
+[ext_resource type="Script" path="res://Scripts/TaskSystem/WorkDay.cs" id="1_oo3ml"]
+[ext_resource type="Script" path="res://Scripts/TaskSystem/Tasks/Computer/ComputerTaskResource.cs" id="2_jiinr"]
+[ext_resource type="Resource" uid="uid://c4vgm1wyft5tc" path="res://WorkDays/Gameplay/EasyFuses.tres" id="2_uebqb"]
+[ext_resource type="Script" path="res://Scripts/TaskSystem/Tasks/Email/EmailTaskResource.cs" id="3_87gxi"]
+
+[sub_resource type="Resource" id="Resource_hcde5"]
+script = ExtResource("2_jiinr")
+
+[sub_resource type="Resource" id="Resource_20731"]
+script = ExtResource("3_87gxi")
+minCooldown = 150
+maxCooldown = 250
+initialCooldown = 50
+penaltyThreshold = 240
+penaltyFrequency = 10
+penaltyAmount = 1
+completionThreshold = 50
+
+[resource]
+script = ExtResource("1_oo3ml")
+toUnlock = ExtResource("2_uebqb")
+title = "Day 1: Emails"
+timeScale = 7
+budget = 150
+tasks = Array[Object]([SubResource("Resource_hcde5"), SubResource("Resource_20731")])

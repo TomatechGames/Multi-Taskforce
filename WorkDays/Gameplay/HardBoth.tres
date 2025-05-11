@@ -1,0 +1,39 @@
+[gd_resource type="Resource" script_class="WorkDay" load_steps=10 format=3 uid="uid://tnsq3vphgufu"]
+
+[ext_resource type="Script" path="res://Scripts/TaskSystem/WorkDay.cs" id="1_wnvdv"]
+[ext_resource type="Script" path="res://Scripts/TaskSystem/Tasks/Computer/ComputerTaskResource.cs" id="2_ki56g"]
+[ext_resource type="Script" path="res://Scripts/TaskSystem/Tasks/DeliveryBoxes/DeliveryBoxesTaskResource.cs" id="3_6ud10"]
+[ext_resource type="Script" path="res://Scripts/TaskSystem/Tasks/Email/EmailTaskResource.cs" id="4_tjoac"]
+[ext_resource type="Script" path="res://Scripts/TaskSystem/Tasks/PowerPanel/PowerPanelTaskResource.cs" id="5_jic0e"]
+
+[sub_resource type="Resource" id="Resource_s4431"]
+script = ExtResource("2_ki56g")
+
+[sub_resource type="Resource" id="Resource_igobq"]
+script = ExtResource("3_6ud10")
+
+[sub_resource type="Resource" id="Resource_8mty1"]
+script = ExtResource("4_tjoac")
+minCooldown = 150
+maxCooldown = 200
+initialCooldown = 200
+penaltyThreshold = 20
+penaltyFrequency = 10
+penaltyAmount = 3
+completionThreshold = 75
+
+[sub_resource type="Resource" id="Resource_wvcfa"]
+script = ExtResource("5_jic0e")
+cooldownPenaltyPerMissing = 20
+fullCooldown = 50
+costPenaltyPerMissing = 20
+drainPerEmptyPulse = 5
+failWeight = 15
+initialTargetWeight = 5
+
+[resource]
+script = ExtResource("1_wnvdv")
+title = "Day 4: Hard Mode"
+timeScale = 3
+budget = 1000
+tasks = Array[Object]([SubResource("Resource_s4431"), SubResource("Resource_igobq"), SubResource("Resource_8mty1"), SubResource("Resource_wvcfa")])

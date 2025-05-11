@@ -14,22 +14,25 @@ public partial class ComputerTaskNode : TaskNode
     Control windowParent;
     Control taskbarButtonParent;
     public override string TaskId => "Computer";
-    public override string[] TaskDependancies => new string[] { "PowerPanel" };
-    List<ComputerWindow> windows = new();
+    public override string[] TaskDependancies => ["PowerPanel"];
+    List<ComputerWindow> windows = [];
 
     PowerPanelTaskNode power;
     public override void PrepareTask(TaskResource config, Dictionary<string, TaskNode> dependancies)
     {
         windowParent = computerUI.GetNode<Control>("%WindowParent");
         taskbarButtonParent = computerUI.GetNode<Control>("%TaskbarButtonParent");
-        power = dependancies["PowerPanel"] as PowerPanelTaskNode;
-        power.PowerStateChanged += UpdateBlanket;
-        UpdateBlanket();
+        if(dependancies.TryGetValue("PowerPanel", out var powerNode))
+        {
+            power = powerNode as PowerPanelTaskNode;
+            power.PowerStateChanged += UpdateBlanket;
+            UpdateBlanket();
+        }
     }
 
     public override void StartTask()
     {
-        CreateWindow("Window One", w => w.CustomMinimumSize = new(235, 179));
+        //CreateWindow("Window One", w => w.CustomMinimumSize = new(235, 179));
     }
 
     void UpdateBlanket()

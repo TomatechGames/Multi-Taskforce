@@ -32,8 +32,13 @@ public partial class ComputerWindow : Control
         }
     }
 
-    public void AddContent(Node content) =>
-        ContentParent.AddChild(content);
+    public void AddContent(Node content)
+    {
+        if (content.GetParent() is not null)
+            content.Reparent(ContentParent);
+        else
+            ContentParent.AddChild(content);
+    }
 
     bool minimised = false;
     public bool IsMinimised

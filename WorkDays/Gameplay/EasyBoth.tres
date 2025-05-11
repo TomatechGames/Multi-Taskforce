@@ -1,0 +1,40 @@
+[gd_resource type="Resource" script_class="WorkDay" load_steps=11 format=3 uid="uid://bdlskof75eakq"]
+
+[ext_resource type="Script" path="res://Scripts/TaskSystem/WorkDay.cs" id="1_k44sp"]
+[ext_resource type="Resource" uid="uid://tnsq3vphgufu" path="res://WorkDays/Gameplay/HardBoth.tres" id="2_4twu2"]
+[ext_resource type="Script" path="res://Scripts/TaskSystem/Tasks/Computer/ComputerTaskResource.cs" id="2_8dpbf"]
+[ext_resource type="Script" path="res://Scripts/TaskSystem/Tasks/DeliveryBoxes/DeliveryBoxesTaskResource.cs" id="3_57th1"]
+[ext_resource type="Script" path="res://Scripts/TaskSystem/Tasks/Email/EmailTaskResource.cs" id="4_j46m1"]
+[ext_resource type="Script" path="res://Scripts/TaskSystem/Tasks/PowerPanel/PowerPanelTaskResource.cs" id="5_nlhe1"]
+
+[sub_resource type="Resource" id="Resource_ihp7l"]
+script = ExtResource("2_8dpbf")
+
+[sub_resource type="Resource" id="Resource_2vff6"]
+script = ExtResource("3_57th1")
+
+[sub_resource type="Resource" id="Resource_rkcj7"]
+script = ExtResource("4_j46m1")
+minCooldown = 200
+maxCooldown = 300
+penaltyThreshold = 240
+penaltyFrequency = 10
+penaltyAmount = 1
+completionThreshold = 50
+
+[sub_resource type="Resource" id="Resource_q87gt"]
+script = ExtResource("5_nlhe1")
+cooldownPenaltyPerMissing = 30
+fullCooldown = 100
+costPenaltyPerMissing = 20
+drainPerEmptyPulse = 3
+failWeight = 10
+initialTargetWeight = 1
+
+[resource]
+script = ExtResource("1_k44sp")
+toUnlock = ExtResource("2_4twu2")
+title = "Day 3: Both"
+timeScale = 5
+budget = 1000
+tasks = Array[Object]([SubResource("Resource_ihp7l"), SubResource("Resource_2vff6"), SubResource("Resource_rkcj7"), SubResource("Resource_q87gt")])

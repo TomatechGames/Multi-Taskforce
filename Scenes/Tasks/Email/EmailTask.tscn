@@ -1,4 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://cduwpxb3rqj5w"]
+[gd_scene load_steps=4 format=3 uid="uid://cduwpxb3rqj5w"]
+
+[ext_resource type="Script" path="res://Scripts/TaskSystem/Tasks/Email/EmailTaskNode.cs" id="1_6c3di"]
+[ext_resource type="AudioStream" uid="uid://bgto2oofwyf6l" path="res://Sounds/Email/new-notification-7-210334.mp3" id="2_reljn"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cdlwa"]
 content_margin_left = 2.0
@@ -11,10 +14,21 @@ corner_radius_top_right = 2
 corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
 
-[node name="EmailTask" type="Node3D"]
+[node name="EmailTask" type="Node3D" node_paths=PackedStringArray("emailWindowContent", "fromLabel", "contentLabel", "responseBox", "buttonParent", "progressBar", "responseLayout", "notif")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.82055, 1.36372, -2.0207)
+script = ExtResource("1_6c3di")
+emailWindowContent = NodePath("Control")
+fromLabel = NodePath("Control/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/PanelContainer/Label")
+contentLabel = NodePath("Control/HBoxContainer/MarginContainer/VBoxContainer/PanelContainer/Label")
+responseBox = NodePath("Control/HBoxContainer/MarginContainer/VBoxContainer/TextEdit")
+buttonParent = NodePath("Control/HBoxContainer/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer")
+progressBar = NodePath("Control/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer3/ProgressBar")
+responseLayout = NodePath("Control/HBoxContainer/MarginContainer/VBoxContainer")
+notif = NodePath("AudioStreamPlayer3D")
+fakeWords = PackedStringArray("╎𝙹⚍ ⍊⍑", "リ𝙹ꖎ⍑↸", "↸ᓭ𝙹⋮⎓ ᒲ;", "⍑╎𝙹", "∷⎓リ𝙹ꖎ⍑↸⍊", "⍑ʖ⋮ꖌ∷⚍", "ʖ⍊╎⚍", "ꖎ⍑", "⋮↸ᓭ𝙹⋮")
 
 [node name="Control" type="Control" parent="."]
-custom_minimum_size = Vector2(300, 200)
+custom_minimum_size = Vector2(400, 250)
 layout_mode = 3
 anchors_preset = 0
 offset_right = 300.0
@@ -27,6 +41,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 1
 color = Color(0.32, 0.425, 0.5, 1)
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Control"]
@@ -40,9 +55,11 @@ grow_vertical = 2
 [node name="MarginContainer2" type="MarginContainer" parent="Control/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_stretch_ratio = 1.25
 
 [node name="ColorRect" type="ColorRect" parent="Control/HBoxContainer/MarginContainer2"]
 layout_mode = 2
+mouse_filter = 1
 color = Color(0.247, 0.324583, 0.38, 1)
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Control/HBoxContainer/MarginContainer2"]
@@ -61,11 +78,6 @@ theme_override_constants/margin_bottom = 3
 [node name="VBoxContainer" type="VBoxContainer" parent="Control/HBoxContainer/MarginContainer2/ScrollContainer/MarginContainer"]
 layout_mode = 2
 
-[node name="Button" type="Button" parent="Control/HBoxContainer/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 10
-text = "-> employee_742"
-
 [node name="MarginContainer" type="MarginContainer" parent="Control/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
@@ -76,6 +88,7 @@ theme_override_constants/margin_right = 3
 theme_override_constants/margin_bottom = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Control/HBoxContainer/MarginContainer"]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 
@@ -127,6 +140,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_cdlwa")
 
 [node name="Label" type="RichTextLabel" parent="Control/HBoxContainer/MarginContainer/VBoxContainer/PanelContainer"]
 layout_mode = 2
+mouse_filter = 1
 theme_override_constants/line_separation = -3
 theme_override_font_sizes/normal_font_size = 10
 text = "ꖎᓭ⍑ᔑ𝙹𝙹リ   ↸リ𝙹
@@ -151,8 +165,17 @@ custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
+mouse_filter = 1
+max_value = 1.0
 show_percentage = false
 
 [node name="TextEdit" type="TextEdit" parent="Control/HBoxContainer/MarginContainer/VBoxContainer"]
-custom_minimum_size = Vector2(0, 35)
+custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
+theme_override_font_sizes/font_size = 10
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("2_reljn")
+volume_db = -30.0
+pitch_scale = 1.25
+attenuation_filter_db = -6.0
