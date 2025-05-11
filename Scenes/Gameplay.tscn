@@ -52,7 +52,7 @@ ring_segments = 16
 
 [node name="Node3D" type="Node3D"]
 
-[node name="GameplayManager" type="Node" parent="." node_paths=PackedStringArray("taskParent", "player", "hud", "playerHud", "budgetLabel", "timeLabel", "failOverlay", "winOverlay", "taskUIParent")]
+[node name="GameplayManager" type="Node" parent="." node_paths=PackedStringArray("taskParent", "player", "hud", "playerHud", "budgetLabel", "timeLabel", "failOverlay", "winOverlay", "nextWorkDayButton", "highscoreMsg", "taskUIParent")]
 script = ExtResource("1_onylu")
 debugWorkDay = ExtResource("2_mjvx4")
 taskParent = NodePath("../Tasks")
@@ -63,6 +63,8 @@ budgetLabel = NodePath("../GUI/HUD/BudgetLabel")
 timeLabel = NodePath("../GUI/HUD/TimeLabel")
 failOverlay = NodePath("../GUI/Fail")
 winOverlay = NodePath("../GUI/Win")
+nextWorkDayButton = NodePath("../GUI/Win/HBoxContainer/Button2")
+highscoreMsg = NodePath("../GUI/Win/Label2")
 taskUIParent = NodePath("../GUI/TaskUIPanels")
 
 [node name="Player" type="CharacterBody3D" parent="." node_paths=PackedStringArray("testRC", "camera")]
@@ -214,11 +216,30 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 64
 text = "Work Day Complate!"
 
-[node name="Button" type="Button" parent="GUI/Win"]
+[node name="Label2" type="Label" parent="GUI/Win"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.964706, 0, 1)
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/font_size = 32
+text = "HIGHSCORE"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="GUI/Win"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 10
+
+[node name="Button" type="Button" parent="GUI/Win/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 32
 text = "Return to Menu"
+
+[node name="Button2" type="Button" parent="GUI/Win/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 32
+text = "Next Day"
 
 [node name="Fail" type="VBoxContainer" parent="GUI"]
 visible = false
@@ -242,15 +263,30 @@ text = "Budget Depleted.
 Game Over"
 horizontal_alignment = 1
 
-[node name="Button" type="Button" parent="GUI/Fail"]
+[node name="HBoxContainer" type="HBoxContainer" parent="GUI/Fail"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 10
+
+[node name="Button" type="Button" parent="GUI/Fail/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 32
 text = "Return to Menu"
 
+[node name="Button2" type="Button" parent="GUI/Fail/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 32
+text = "Retry"
+
 [node name="MenuSceneTarget" type="Node" parent="GUI"]
 script = ExtResource("13_g32i0")
 SceneFile = "res://Scenes/MainMenu.tscn"
+
+[node name="GameSceneTarget" type="Node" parent="GUI"]
+script = ExtResource("13_g32i0")
+SceneFile = "res://Scenes/Gameplay.tscn"
 
 [node name="Building" type="Node3D" parent="."]
 
@@ -764,6 +800,8 @@ environment = ExtResource("6_22b8v")
 transform = Transform3D(0.751264, 0.262118, -0.60572, 0, 0.917755, 0.397148, 0.660002, -0.298363, 0.689476, -2.59, 3.206, 3.83)
 current = true
 
-[connection signal="pressed" from="GUI/Win/Button" to="GUI/MenuSceneTarget" method="LoadScene"]
-[connection signal="pressed" from="GUI/Fail/Button" to="GUI/MenuSceneTarget" method="LoadScene"]
+[connection signal="pressed" from="GUI/Win/HBoxContainer/Button" to="GUI/MenuSceneTarget" method="LoadScene"]
+[connection signal="pressed" from="GUI/Win/HBoxContainer/Button2" to="GUI/GameSceneTarget" method="LoadScene"]
+[connection signal="pressed" from="GUI/Fail/HBoxContainer/Button" to="GUI/MenuSceneTarget" method="LoadScene"]
+[connection signal="pressed" from="GUI/Fail/HBoxContainer/Button2" to="GUI/GameSceneTarget" method="LoadScene"]
 [connection signal="InteractionTriggered" from="Interactable" to="Interactable/Toggle" method="Toggle"]

@@ -102,14 +102,14 @@ public partial class EmailTaskNode : ConfigurableTaskNode<EmailTaskResource>
         cooldown--;
         if (cooldown < 0)
         {
-            cooldown = GD.RandRange(config.minCooldown, config.maxCooldown);
+            cooldown = GameplayManager.rng.RandiRange(config.minCooldown, config.maxCooldown);
             GenerateEmail();
         }
     }
 
     void GenerateEmail()
     {
-        int senderId = GD.RandRange(100, 999);
+        int senderId = GameplayManager.rng.RandiRange(100, 999); 
         EmailData newEmail = new()
         {
             sender = $"employee_{senderId}@mtfmail.com",
@@ -133,7 +133,7 @@ public partial class EmailTaskNode : ConfigurableTaskNode<EmailTaskResource>
         List<string> words = [];
         for (int i = 0; i < amount; i++)
         {
-            words.Add(fakeWords[GD.RandRange(0, fakeWords.Length - 1)]);
+            words.Add(fakeWords[GameplayManager.rng.RandiRange(0, fakeWords.Length - 1)]);
         }
         return string.Join("  ", words);
     }

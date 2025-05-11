@@ -23,8 +23,9 @@ initialTargetWeight = 3
 
 [resource]
 script = ExtResource("1_1ya3u")
+unlockByDefault = false
 toUnlock = ExtResource("2_m0mo7")
-title = "Day 3: Both"
+title = "Day 2: Fuses"
 timeScale = 7
 budget = 300
 tasks = Array[Object]([SubResource("Resource_nj17e"), SubResource("Resource_8cr4g"), SubResource("Resource_t5hk3")])

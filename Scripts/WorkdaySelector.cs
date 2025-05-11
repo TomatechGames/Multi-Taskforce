@@ -25,19 +25,28 @@ public partial class WorkdaySelector : Control
             Button btn = new()
             {
                 Text = workday.title,
-                Disabled = !configFile.GetValue(workday.ResourceName, "unlocked", workday == workDays[0]).AsBool(),
+                Disabled = !(configFile.GetValue(workday.id, "unlocked", false).AsBool() || workday.unlockByDefault),
             };
             buttonParent.AddChild(btn);
             var day = workday;
             btn.Pressed += () => SelectDay(day);
         }
+
+        foreach (var sec in configFile.GetSections())
+        {
+            foreach (var key in configFile.GetSectionKeys(sec))
+            {
+                GD.Print($"{sec}.{key} = {configFile.GetValue(sec, key)}");
+            }
+        }
     }
 
     public void SelectDay(WorkDay day)
     {
+        GD.Print(day.id);
         GameplayManager.CurrentWorkDay = day;
-        bool completed = configFile.GetValue(day.ResourceName, "complete", false).AsBool();
-        highscore.Text = completed ? "No Highscore" : configFile.GetValue(day.ResourceName, "highscore", 0).AsInt32().ToString();
+        bool completed = configFile.GetValue(day.id, "complete", false).AsBool();
+        highscore.Text = completed ? configFile.GetValue(day.id, "highscore", 0).AsInt32().ToString() : "No Highscore";
         dayName.Text = day.title;
         playPanel.Visible = true;
     }

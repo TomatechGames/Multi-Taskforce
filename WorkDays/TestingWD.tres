@@ -16,6 +16,7 @@ script = ExtResource("3_a7qlh")
 script = ExtResource("4_iwnr8")
 minCooldown = 200
 maxCooldown = 300
+initialCooldown = 200
 penaltyThreshold = 240
 penaltyFrequency = 10
 penaltyAmount = 1
@@ -28,10 +29,11 @@ fullCooldown = 100
 costPenaltyPerMissing = 20
 drainPerEmptyPulse = 3
 failWeight = 10
-initialTargetWeight = 10
+initialTargetWeight = 1
 
 [resource]
 script = ExtResource("1_pybr2")
+unlockByDefault = true
 title = "Debug Work Day"
 timeScale = 7
 budget = 1000

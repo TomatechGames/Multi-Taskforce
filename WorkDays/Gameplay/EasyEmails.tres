@@ -20,6 +20,7 @@ completionThreshold = 50
 
 [resource]
 script = ExtResource("1_oo3ml")
+unlockByDefault = true
 toUnlock = ExtResource("2_uebqb")
 title = "Day 1: Emails"
 timeScale = 7

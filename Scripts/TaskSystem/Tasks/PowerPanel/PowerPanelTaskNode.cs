@@ -97,12 +97,12 @@ public partial class PowerPanelTaskNode : ConfigurableTaskNode<PowerPanelTaskRes
             }
             cooldown = config.fullCooldown - (config.cooldownPenaltyPerMissing * missing);
             float targetPercent = targetWeight / (float)(targetWeight + config.failWeight);
-            if (GD.Randf() > targetPercent)
+            if (GameplayManager.rng.Randf() > targetPercent)
             {
                 targetWeight++;
                 return;
             }
-            var targetIdx = GD.RandRange(0, fuseButtons.Length - 1);
+            var targetIdx = GameplayManager.rng.RandiRange(0, fuseButtons.Length - 1);
             if (fuseStates[targetIdx] != 2)
                 return;
             GameplayManager.ChangeBudget(-config.costPenaltyPerMissing * missing);

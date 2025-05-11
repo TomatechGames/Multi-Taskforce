@@ -48,7 +48,7 @@ public partial class ComputerTaskNode : TaskNode
         newWindow.IsMinimised = true;
         configureWindow?.Invoke(newWindow);
         var limit = windowParent.Size - newWindow.GetCombinedMinimumSize();
-        newWindow.Position = new((float)GD.RandRange(0,limit.X),(float)GD.RandRange(0,limit.Y));
+        newWindow.Position = new(GameplayManager.rng.RandfRange(0, limit.X), GameplayManager.rng.RandfRange(0, limit.Y));
         windows.Add(newWindow);
         if (!noMinimise)
         {

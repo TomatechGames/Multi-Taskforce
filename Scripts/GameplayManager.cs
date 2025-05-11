@@ -47,7 +47,10 @@ public partial class GameplayManager : Node
     [Export]
     Control taskUIParent;
     public static PlayerController Player => instance?.player;
-    List<TaskNode> activeTasks = new();
+
+    public static RandomNumberGenerator rng { get; private set; } = new();
+
+    List<TaskNode> activeTasks = [];
 
     int currentBudget = 0;
 
@@ -56,11 +59,13 @@ public partial class GameplayManager : Node
         instance = this;
         currentWorkDay ??= debugWorkDay;
         currentBudget = currentWorkDay.budget;
+        if (currentWorkDay.rngSeed >= 0)
+            rng.Seed = (uint)currentWorkDay.rngSeed;
         budgetLabel.Text = $"€{currentBudget}";
         Input.MouseMode = Input.MouseModeEnum.Captured;
 
-        Dictionary<string, TaskNode> taskDict = new();
-        Dictionary<string, TaskResource> taskResourceDict = new();
+        Dictionary<string, TaskNode> taskDict = [];
+        Dictionary<string, TaskResource> taskResourceDict = [];
 
         foreach (var taskResource in CurrentWorkDay.tasks)
         {
@@ -125,23 +130,31 @@ public partial class GameplayManager : Node
             timeLabel.Text = $"Time: {time / 60}:{(time % 60 < 10 ? "0" : "")}{time % 60}";
             if (time >= 60 * 17)
             {
+                Input.MouseMode = Input.MouseModeEnum.Visible;
                 gameRunning = false;
-                hud.Visible = false;
+                playerHud.Visible = false;
                 taskUIParent.Visible = false;
                 winOverlay.Visible = true;
                 ConfigFile configFile = new();
                 configFile.Load("user://progress.cfg");
-                bool wasComplete = configFile.GetValue(currentWorkDay.ResourceName, "complete", false).AsBool();
-                configFile.SetValue(currentWorkDay.ResourceName, "complete", true);
+                bool wasComplete = configFile.GetValue(currentWorkDay.id, "complete", false).AsBool();
+                configFile.SetValue(currentWorkDay.id, "complete", true);
                 if (currentWorkDay.toUnlock is WorkDay next)
-                    configFile.SetValue(next.ResourceName, "unlocked", true);
-                var highscore = configFile.GetValue(currentWorkDay.ResourceName, "highscore", 0).AsInt32();
+                    configFile.SetValue(next.id, "unlocked", true);
+                var highscore = configFile.GetValue(currentWorkDay.id, "highscore", 0).AsInt32();
                 if (currentBudget > highscore)
                 {
-                    configFile.SetValue(currentWorkDay.ResourceName, "highscore", currentBudget);
+                    configFile.SetValue(currentWorkDay.id, "highscore", currentBudget);
                     highscoreMsg.Visible = true;
                 }
-                configFile.Save("user://progress.cfg");
+                GD.Print(configFile.Save("user://progress.cfg"));
+                foreach (var sec in configFile.GetSections())
+                {
+                    foreach (var key in configFile.GetSectionKeys(sec))
+                    {
+                        GD.Print($"{sec}.{key} = {configFile.GetValue(sec, key)}");
+                    }
+                }
                 currentWorkDay = currentWorkDay.toUnlock;
                 nextWorkDayButton.Visible = currentWorkDay is not null;
             }
@@ -181,8 +194,9 @@ public partial class GameplayManager : Node
 
         if (instance.currentBudget < 0)
         {
+            Input.MouseMode = Input.MouseModeEnum.Visible;
             instance.gameRunning = false;
-            instance.hud.Visible = false;
+            instance.playerHud.Visible = false;
             instance.taskUIParent.Visible = false;
             instance.failOverlay.Visible = true;
         }

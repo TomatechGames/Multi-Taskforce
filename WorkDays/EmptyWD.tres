@@ -4,8 +4,8 @@
 
 [resource]
 script = ExtResource("1_6opvg")
-id = "testday"
+unlockByDefault = true
 title = "Test Day"
-timeScale = 7
+timeScale = 60
 budget = 1000
 tasks = Array[Object]([])
