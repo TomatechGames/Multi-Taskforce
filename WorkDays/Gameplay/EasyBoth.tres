@@ -17,6 +17,7 @@ script = ExtResource("3_57th1")
 script = ExtResource("4_j46m1")
 minCooldown = 200
 maxCooldown = 300
+initialCooldown = 200
 penaltyThreshold = 240
 penaltyFrequency = 10
 penaltyAmount = 1
@@ -33,8 +34,10 @@ initialTargetWeight = 1
 
 [resource]
 script = ExtResource("1_k44sp")
+unlockByDefault = false
 toUnlock = ExtResource("2_4twu2")
 title = "Day 3: Both"
+rngSeed = -1
 timeScale = 5
 budget = 1000
 tasks = Array[Object]([SubResource("Resource_ihp7l"), SubResource("Resource_2vff6"), SubResource("Resource_rkcj7"), SubResource("Resource_q87gt")])

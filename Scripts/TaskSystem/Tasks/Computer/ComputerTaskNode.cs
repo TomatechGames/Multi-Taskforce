@@ -22,9 +22,10 @@ public partial class ComputerTaskNode : TaskNode
     {
         windowParent = computerUI.GetNode<Control>("%WindowParent");
         taskbarButtonParent = computerUI.GetNode<Control>("%TaskbarButtonParent");
-        if(dependancies.TryGetValue("PowerPanel", out var powerNode))
+        blanket.Visible = false;
+        if (dependancies.TryGetValue("PowerPanel", out var node) && node is PowerPanelTaskNode powerNode)
         {
-            power = powerNode as PowerPanelTaskNode;
+            power = powerNode;
             power.PowerStateChanged += UpdateBlanket;
             UpdateBlanket();
         }

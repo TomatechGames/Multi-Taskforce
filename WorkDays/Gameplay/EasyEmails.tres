@@ -23,6 +23,7 @@ script = ExtResource("1_oo3ml")
 unlockByDefault = true
 toUnlock = ExtResource("2_uebqb")
 title = "Day 1: Emails"
+rngSeed = -1
 timeScale = 7
 budget = 150
 tasks = Array[Object]([SubResource("Resource_hcde5"), SubResource("Resource_20731")])

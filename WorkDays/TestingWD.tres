@@ -35,6 +35,7 @@ initialTargetWeight = 1
 script = ExtResource("1_pybr2")
 unlockByDefault = true
 title = "Debug Work Day"
+rngSeed = -1
 timeScale = 7
 budget = 1000
 tasks = Array[Object]([SubResource("Resource_8yowh"), SubResource("Resource_jx441"), SubResource("Resource_d6il7"), SubResource("Resource_hyld6")])

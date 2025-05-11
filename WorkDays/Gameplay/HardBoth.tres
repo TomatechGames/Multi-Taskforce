@@ -33,7 +33,9 @@ initialTargetWeight = 5
 
 [resource]
 script = ExtResource("1_wnvdv")
+unlockByDefault = false
 title = "Day 4: Hard Mode"
+rngSeed = -1
 timeScale = 3
 budget = 1000
 tasks = Array[Object]([SubResource("Resource_s4431"), SubResource("Resource_igobq"), SubResource("Resource_8mty1"), SubResource("Resource_wvcfa")])
