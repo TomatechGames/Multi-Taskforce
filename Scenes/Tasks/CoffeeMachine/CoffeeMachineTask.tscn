@@ -1,4 +1,9 @@
-[gd_scene load_steps=22 format=4 uid="uid://c305yxo8whbge"]
+[gd_scene load_steps=27 format=4 uid="uid://c305yxo8whbge"]
+
+[ext_resource type="PackedScene" uid="uid://gbi2m5t6724l" path="res://Models/CustomHuman.tscn" id="1_h2sgy"]
+[ext_resource type="PackedScene" uid="uid://cdcwu4btgt4yt" path="res://Scenes/Tasks/DeliveryBoxes/DeliveryBox.tscn" id="2_ggw72"]
+[ext_resource type="Resource" uid="uid://d0bl8xpllpvkd" path="res://Scenes/Tasks/CoffeeMachine/WaterItem.tres" id="3_1pmah"]
+[ext_resource type="Resource" uid="uid://b4tewfqqck2tq" path="res://Scenes/Tasks/CoffeeMachine/CoffeeItem.tres" id="4_pl1bp"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_57ap7"]
 resource_name = "Metal"
@@ -357,6 +362,9 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_l4rvq")
 
+[sub_resource type="PlaneMesh" id="PlaneMesh_htnj7"]
+material = SubResource("StandardMaterial3D_5gcrb")
+
 [node name="CoffeeMachineTask" type="Node3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 1, 3.5)
 
@@ -400,3 +408,59 @@ skeleton = NodePath("")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.942273, 0.796923)
 light_energy = 0.1
 shadow_enabled = true
+
+[node name="Human" parent="." instance=ExtResource("1_h2sgy")]
+transform = Transform3D(1.31134e-07, 0, 1, 0, 1, 0, -1, 0, 1.31134e-07, -4, -1, -1.5)
+
+[node name="Label3D" type="Label3D" parent="Human"]
+transform = Transform3D(1, 0, 1.74846e-07, 0, 1, 0, -1.74846e-07, 0, 1, 5.83745e-08, 1.03438, 0.333863)
+text = "Get me a 
+coffee, pronto."
+line_spacing = -6.0
+
+[node name="DeliveryBox" parent="." node_paths=PackedStringArray("itemRepresentations") instance=ExtResource("2_ggw72")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.79641, 0)
+itemRepresentations = [NodePath("MeshInstance3D")]
+itemType = ExtResource("3_1pmah")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="DeliveryBox"]
+transform = Transform3D(0.24, 0, 0, 0, 1, 0, 0, 0, 0.125, 0, 0.138472, 0.128903)
+mesh = SubResource("PlaneMesh_htnj7")
+
+[node name="DeliveryBox2" parent="." node_paths=PackedStringArray("itemRepresentations") instance=ExtResource("2_ggw72")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.71055, -1.96358, 0)
+itemRepresentations = [NodePath("Beans")]
+itemType = ExtResource("4_pl1bp")
+
+[node name="Beans" type="Node3D" parent="DeliveryBox2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0742471, 0.130474)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="DeliveryBox2/Beans"]
+transform = Transform3D(0.24, 0, 0, 0, 1, 0, 0, 0, 0.125, 0, 0.00789315, -0.00461054)
+material_override = SubResource("StandardMaterial3D_872xf")
+mesh = SubResource("PlaneMesh_htnj7")
+
+[node name="CoffeeBeans" type="MeshInstance3D" parent="DeliveryBox2/Beans"]
+transform = Transform3D(0.35, 0, 0, 0, 0.15, 0, 0, 0, 0.35, 0, 0, 0)
+mesh = SubResource("ArrayMesh_tj2qo")
+skeleton = NodePath("")
+
+[node name="CoffeeBeans2" type="MeshInstance3D" parent="DeliveryBox2/Beans"]
+transform = Transform3D(0.35, 0, 0, 0, 0.15, 0, 0, 0, 0.35, -0.0958702, 0, 0)
+mesh = SubResource("ArrayMesh_tj2qo")
+skeleton = NodePath("")
+
+[node name="CoffeeBeans3" type="MeshInstance3D" parent="DeliveryBox2/Beans"]
+transform = Transform3D(0.35, 0, 0, 0, 0.15, 0, 0, 0, 0.35, -0.136133, 0, -0.0011642)
+mesh = SubResource("ArrayMesh_tj2qo")
+skeleton = NodePath("")
+
+[node name="CoffeeBeans4" type="MeshInstance3D" parent="DeliveryBox2/Beans"]
+transform = Transform3D(0.35, 0, 0, 0, 0.15, 0, 0, 0, 0.35, 0.113858, 0, -0.0011642)
+mesh = SubResource("ArrayMesh_tj2qo")
+skeleton = NodePath("")
+
+[node name="CoffeeBeans5" type="MeshInstance3D" parent="DeliveryBox2/Beans"]
+transform = Transform3D(0.35, 0, 0, 0, 0.15, 0, 0, 0, 0.35, 0.139328, 0, -0.0011642)
+mesh = SubResource("ArrayMesh_tj2qo")
+skeleton = NodePath("")

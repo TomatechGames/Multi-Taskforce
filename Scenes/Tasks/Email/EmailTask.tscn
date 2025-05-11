@@ -1,0 +1,158 @@
+[gd_scene load_steps=2 format=3 uid="uid://cduwpxb3rqj5w"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cdlwa"]
+content_margin_left = 2.0
+content_margin_top = 2.0
+content_margin_right = 2.0
+content_margin_bottom = 2.0
+bg_color = Color(0.310617, 0.310617, 0.310617, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[node name="EmailTask" type="Node3D"]
+
+[node name="Control" type="Control" parent="."]
+custom_minimum_size = Vector2(300, 200)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 300.0
+offset_bottom = 150.0
+
+[node name="ColorRect" type="ColorRect" parent="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.32, 0.425, 0.5, 1)
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer2" type="MarginContainer" parent="Control/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ColorRect" type="ColorRect" parent="Control/HBoxContainer/MarginContainer2"]
+layout_mode = 2
+color = Color(0.247, 0.324583, 0.38, 1)
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Control/HBoxContainer/MarginContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/HBoxContainer/MarginContainer2/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_top = 3
+theme_override_constants/margin_right = 3
+theme_override_constants/margin_bottom = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/HBoxContainer/MarginContainer2/ScrollContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="Control/HBoxContainer/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "-> employee_742"
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_top = 3
+theme_override_constants/margin_right = 3
+theme_override_constants/margin_bottom = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/HBoxContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/HBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Control/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 10
+text = "From:"
+
+[node name="PanelContainer" type="PanelContainer" parent="Control/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_cdlwa")
+
+[node name="Label" type="Label" parent="Control/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/PanelContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "employee_742@mtfmail.com"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Control/HBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Control/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 10
+text = "To:"
+
+[node name="PanelContainer" type="PanelContainer" parent="Control/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_cdlwa")
+
+[node name="Label" type="Label" parent="Control/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2/PanelContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "intern_2836@mtfmail.com"
+
+[node name="PanelContainer" type="PanelContainer" parent="Control/HBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_cdlwa")
+
+[node name="Label" type="RichTextLabel" parent="Control/HBoxContainer/MarginContainer/VBoxContainer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/line_separation = -3
+theme_override_font_sizes/normal_font_size = 10
+text = "ꖎᓭ⍑ᔑ𝙹𝙹リ   ↸リ𝙹
+
+↸⎓⋮↸ᓭ𝙹⋮⎓ ᒲ;ꖎℸ ̣ ⊣⍑╎𝙹⚍ ∷⎓リ
+𝙹ꖎ ╎𝙹⚍ ⍊⍑⚍ ∷⎓リ𝙹ꖎ⍑↸⍊⍑ʖ⋮ꖌ∷⚍   
+⍑ℸ ̣𝙹╎ʖ⍊╎⚍  ̇/⚍ ᓵリ
+
+⚍ ⍑ℸ ̣  𝙹╎ʖ⍊╎⚍   ̇/⚍ ᓵリ"
+autowrap_mode = 2
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="Control/HBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Control/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "Response"
+
+[node name="ProgressBar" type="ProgressBar" parent="Control/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer3"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+show_percentage = false
+
+[node name="TextEdit" type="TextEdit" parent="Control/HBoxContainer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2

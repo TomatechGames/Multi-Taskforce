@@ -598,9 +598,6 @@ shape = SubResource("BoxShape3D_vy6at")
 
 [node name="CoffeeMachineTask" parent="Tasks" instance=ExtResource("12_illhn")]
 
-[node name="Human" parent="Tasks" instance=ExtResource("7_lfctn")]
-transform = Transform3D(1.31134e-07, 0, 1, 0, 1, 0, -1, 0, 1.31134e-07, -3.5, 0, 2)
-
 [node name="Server" parent="." instance=ExtResource("1_ltj13")]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 2.5, 0, 0)
 

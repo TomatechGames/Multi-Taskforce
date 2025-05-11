@@ -39,6 +39,7 @@ shape = SubResource("BoxShape3D_crgxa")
 
 [node name="HoverMesh" type="MeshInstance3D" parent="Interactable"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 2.64698e-23, 0.159816, -0.125)
+visible = false
 material_override = ExtResource("3_l0dh8")
 gi_mode = 2
 mesh = SubResource("BoxMesh_rhw5e")
